@@ -25,6 +25,18 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "cognitiveServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "tagValues": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "functions": [],
@@ -36,7 +48,7 @@
             "apiVersion": "2019-06-01",
             "kind": "StorageV2",
             "tags": {
-                "displayName": "[parameters('storageAccountName')]"
+                "displayName": "[parameters('storageAccountNameUpload')]"
             },
             "location": "[resourceGroup().location]",
             "sku": {
@@ -45,7 +57,20 @@
             },
             "properties": {
                 "supportsHttpsTrafficOnly": true
-            }
+            },
+            "resources": [
+                {
+                    "type": "containers",
+                    "apiVersion": "2019-06-01",
+                    "name": "default/images",
+                    "dependsOn": [
+                        "[parameters('storageAccountNameUpload')]"
+                    ],
+                    "properties": {
+                        "publicAccess": "None"
+                    }
+                }
+            ]
         },
         {   // Resource: Storage account for Azure Function
             "name": "[parameters('storageAccountNameFunction')]",
@@ -89,9 +114,31 @@
             "apiVersion": "2020-02-02-preview",
             "location": "[resourceGroup().location]",
             "properties": {
-                "ApplicationId": "[parameters('appInsightsServiceName')]"
+                "ApplicationId": "[parameters('appInsightsServiceName')]",
+                "Application_Type": "other"
             }
-        }   
+        },
+        {
+            "type": "Microsoft.CognitiveServices/accounts",
+            "apiVersion": "2017-04-18",
+            "name": "[parameters('cognitiveServiceName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "F0"
+            },
+            "kind": "ComputerVision",
+            "properties": {
+                "statisticsEnabled": false,
+                "customSubDomainName": "[parameters('cognitiveServiceName')]",
+                "networkAcls": {
+                    "defaultAction": "Allow",
+                    "virtualNetworkRules": [],
+                    "ipRules": []
+                },
+                "privateEndpointConnections": [],
+                "publicNetworkAccess": "Enabled"
+            }
+        }
     ],
     "outputs": {}
 }
