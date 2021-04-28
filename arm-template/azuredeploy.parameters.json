@@ -2,7 +2,16 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "parameter1": {
+        "hostingPlanName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "storageAccountNameFunction": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "storageAccountNameUpload": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "appInsightsServiceName": {
             "value": "" // TODO: Fill in parameter value
         }
     }
