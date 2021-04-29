@@ -59,7 +59,8 @@
     },
     "functions": [],
     "variables": {
-        "cogServCompVisionId": "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', parameters('cognitiveVisionServiceName'))]"
+        "cogServCompVisionId": "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', parameters('cognitiveVisionServiceName'))]",
+        "iotHubKeyName": "service"
     },
     "resources": [
         {   // Resource: Storage account for image upload
@@ -174,6 +175,14 @@
                             "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').InstrumentationKey]"
                         },
                         {
+                            "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                            "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').ConnectionString]"
+                        },
+                        {
+                            "name": "IotHubConnectionString",
+                            "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/Iothubs', parameters('iotHubName'))).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName')), '2020-03-01').primaryKey)]"
+                        },
+                        {
                             "name": "ComputerVisionEndpoint",
                             "value": "[reference(variables('cogServCompVisionId'),'2017-04-18').endpoint]"
                         },
@@ -224,6 +233,10 @@
                         {
                             "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                             "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').InstrumentationKey]"
+                        },
+                        {
+                            "name": "APPLICATIONINSIGHTS_CONNECTION_STRING",
+                            "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').ConnectionString]"
                         },
                         {
                             "name": "ComputerVisionEndpoint",
