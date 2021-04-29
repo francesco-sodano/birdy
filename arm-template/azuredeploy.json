@@ -74,8 +74,19 @@
                 "tier": "Standard"
             },
             "properties": {
-                "supportsHttpsTrafficOnly": true
-            }
+                "supportsHttpsTrafficOnly": true,
+                "accessTier": "Hot"
+            },
+            "resources": [
+                {
+                    "type": "blobServices/containers",
+                    "apiVersion": "2019-06-01",
+                    "name": "default/images",
+                    "dependsOn": [
+                        "[parameters('storageAccountNameUpload')]"
+                    ]
+                }
+            ]
         },
         {   // Resource: Storage account for Azure Function
             "name": "[parameters('storageAccountNameFunction')]",
@@ -91,17 +102,7 @@
             "properties": {
                 "supportsHttpsTrafficOnly": true,
                 "accessTier": "Hot"
-            },
-            "resources": [
-                {
-                    "type": "blobServices/containers",
-                    "apiVersion": "2019-06-01",
-                    "name": "default/images",
-                    "dependsOn": [
-                        "[parameters('storageAccountNameUpload')]"
-                    ]
-                }
-            ]
+            }
         },
         {   // Resource: Hosting Plan for Function App
             "name": "[parameters('hostingPlanName')]",
