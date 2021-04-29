@@ -83,7 +83,7 @@
                     "apiVersion": "2019-06-01",
                     "name": "default/images",
                     "dependsOn": [
-                        "[parameters('storageAccountNameUpload')]"
+                         "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload'))]"
                     ]
                 }
             ]
