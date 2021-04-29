@@ -248,7 +248,7 @@
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "sku": {
-                "name": "F0"
+                "name": "S1"
             },
             "kind": "ComputerVision",
             "properties": {
@@ -273,8 +273,7 @@
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload'))]"
             ],
             "sku": {
-                "name": "F1",
-                "tier": "Free",
+                "name": "S1",
                 "capacity": 1
             },
             "properties": {
