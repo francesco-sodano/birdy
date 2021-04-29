@@ -1,5 +1,7 @@
 # Setup Birdy
 
+
+# Raspberry Pi
 Setup Raspberry: https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 Secure Raspberry: https://www.raspberrypi.org/documentation/configuration/security.md
 Passwordless access: https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md#copy-your-public-key-to-your-raspberry-pi
@@ -62,3 +64,7 @@ add the following line in vi.
 
 export iotDeviceConnectionString="VALUE"
 export birdDetectionVersion="20200330-1.0"
+
+# Trainer
+
+pip install azure-cognitiveservices-vision-customvision
