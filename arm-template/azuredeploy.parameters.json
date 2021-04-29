@@ -30,8 +30,7 @@
             "value": {
                 "Owner": "Francesco Sodano",
                 "Project": "Birdy",
-                "Environment": "Development",
-                "Deployment Time": "[utcNow('u')]"
+                "Environment": "Development"
             }
         }
     }
