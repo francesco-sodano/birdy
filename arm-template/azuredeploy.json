@@ -45,7 +45,7 @@
             }
         },
         "tagValues": {
-            "type": "string",
+            "type": "Object",
             "metadata": {
                 "description": "description"
             }
@@ -80,7 +80,7 @@
                 {
                     "type": "containers",
                     "apiVersion": "2019-06-01",
-                    "name": "default/images",
+                    "name": "images",
                     "dependsOn": [
                         "[parameters('storageAccountNameUpload')]"
                     ],
@@ -108,7 +108,7 @@
         {   // Resource: Hosting Plan for Function App
             "name": "[parameters('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2018-11-01",
+            "apiVersion": "2018-02-01",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
@@ -130,13 +130,14 @@
             "type": "Microsoft.Insights/components",
             "apiVersion": "2020-02-02-preview",
             "location": "[resourceGroup().location]",
+            "kind": "other",
             "tags": "[parameters('tagValues')]",
             "properties": {
                 "ApplicationId": "[parameters('appInsightsServiceName')]",
                 "Application_Type": "other"
             }
         },
-        {   // Resource: Function App (Dispatcher)
+                {   // Resource: Function App (Dispatcher)
             "name": "[parameters('functionNameDispatcher')]",
             "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
@@ -173,10 +174,6 @@
                             "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').InstrumentationKey]"
                         },
                         {
-                            "name": "IoTHubConnectionString",
-                            "value": "[concat('Endpoint=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.endpoint, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey, ';EntityPath=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.path)]"
-                        },
-                        {
                             "name": "ComputerVisionEndpoint",
                             "value": "[reference(variables('cogServCompVisionId'),'2017-04-18').endpoint]"
                         },
@@ -209,7 +206,7 @@
                 "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
             ],
             "properties": {
-                "name": "[parameters('functionNameDispatcher')]",
+                "name": "[parameters('functionNameClassifier')]",
                 "siteConfig": {
                     "appSettings": [
                         {
