@@ -26,7 +26,19 @@
                 "description": "description"
             }
         },
-        "cognitiveServiceName": {
+        "cognitiveVisionServiceName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "functionNameDispatcher": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "functionNameClassifier": {
             "type": "string",
             "metadata": {
                 "description": "description"
@@ -37,19 +49,25 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "iotHubName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "functions": [],
-    "variables": {},
+    "variables": {
+        "cogServCompVisionId": "[concat(resourceGroup().id,'/providers/','Microsoft.CognitiveServices/accounts/', parameters('cognitiveVisionServiceName'))]"
+    },
     "resources": [
         {   // Resource: Storage account for image upload
             "name": "[parameters('storageAccountNameUpload')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
             "kind": "StorageV2",
-            "tags": {
-                "displayName": "[parameters('storageAccountNameUpload')]"
-            },
+            "tags": "[parameters('tagValues')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard_LRS",
@@ -77,9 +95,7 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
             "kind": "StorageV2",
-            "tags": {
-                "displayName": "[parameters('storageAccountNameFunction')]"
-            },
+            "tags": "[parameters('tagValues')]",
             "location": "[resourceGroup().location]",
             "sku": {
                 "name": "Standard_LRS",
@@ -94,6 +110,7 @@
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2018-11-01",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameFunction'))]"
             ],
@@ -113,23 +130,133 @@
             "type": "Microsoft.Insights/components",
             "apiVersion": "2020-02-02-preview",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
             "properties": {
                 "ApplicationId": "[parameters('appInsightsServiceName')]",
                 "Application_Type": "other"
             }
         },
+        {   // Resource: Function App (Dispatcher)
+            "name": "[parameters('functionNameDispatcher')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "kind": "functionapp,linux",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveVisionServiceName'))]",
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+            ],
+            "properties": {
+                "name": "[parameters('functionNameDispatcher')]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "python"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountNameFunction'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameFunction')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').InstrumentationKey]"
+                        },
+                        {
+                            "name": "IoTHubConnectionString",
+                            "value": "[concat('Endpoint=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.endpoint, ';SharedAccessKeyName=iothubowner;SharedAccessKey=', listKeys(resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).value[0].primaryKey, ';EntityPath=', reference(resourceId('Microsoft.Devices/IoTHubs', parameters('iotHubName')), providers('Microsoft.Devices', 'IoTHubs').apiVersions[0]).eventHubEndpoints.events.path)]"
+                        },
+                        {
+                            "name": "ComputerVisionEndpoint",
+                            "value": "[reference(variables('cogServCompVisionId'),'2017-04-18').endpoint]"
+                        },
+                        {
+                            "name": "ComputerVisionKey",
+                            "value": "[listKeys(variables('cogServCompVisionId'),'2017-04-18').key1]"
+                        }
+                    ],
+                    "linuxFxVersion": "Python|3.9",
+                    "use32BitWorkerProcess": false
+                },
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "clientAffinityEnabled": false
+            }
+        },
+        {   // Resource: Function App (Classifier)
+            "name": "[parameters('functionNameClassifier')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "kind": "functionapp,linux",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "identity": {
+                "type": "SystemAssigned"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveVisionServiceName'))]",
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+            ],
+            "properties": {
+                "name": "[parameters('functionNameDispatcher')]",
+                "siteConfig": {
+                    "appSettings": [
+                        {
+                            "name": "FUNCTIONS_EXTENSION_VERSION",
+                            "value": "~3"
+                        },
+                        {
+                            "name": "FUNCTIONS_WORKER_RUNTIME",
+                            "value": "python"
+                        },
+                        {
+                            "name": "AzureWebJobsStorage",
+                            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountNameFunction'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameFunction')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
+                        },
+                        {
+                            "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value": "[reference(resourceId('microsoft.insights/components', parameters('appInsightsServiceName')), '2020-02-02-preview').InstrumentationKey]"
+                        },
+                        {
+                            "name": "ComputerVisionEndpoint",
+                            "value": "[reference(variables('cogServCompVisionId'),'2017-04-18').endpoint]"
+                        },
+                        {
+                            "name": "ComputerVisionKey",
+                            "value": "[listKeys(variables('cogServCompVisionId'),'2017-04-18').key1]"
+                        }
+                    ],
+                    "linuxFxVersion": "Python|3.9",
+                    "use32BitWorkerProcess": false
+                },
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "clientAffinityEnabled": false
+            }
+        },
         {
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2017-04-18",
-            "name": "[parameters('cognitiveServiceName')]",
+            "name": "[parameters('cognitiveVisionServiceName')]",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
             "sku": {
                 "name": "F0"
             },
             "kind": "ComputerVision",
             "properties": {
                 "statisticsEnabled": false,
-                "customSubDomainName": "[parameters('cognitiveServiceName')]",
+                "customSubDomainName": "[parameters('cognitiveVisionServiceName')]",
                 "networkAcls": {
                     "defaultAction": "Allow",
                     "virtualNetworkRules": [],
@@ -137,6 +264,47 @@
                 },
                 "privateEndpointConnections": [],
                 "publicNetworkAccess": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Devices/IotHubs",
+            "apiVersion": "2020-08-31",
+            "name": "[parameters('IoTHubName')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload'))]"
+            ],
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "capacity": 1
+            },
+            "properties": {
+                "eventHubEndpoints": {
+                    "events": {
+                        "retentionTimeInDays": 1,
+                        "partitionCount": 2
+                    }
+                },
+                "storageEndpoints": {
+                    "$default": {
+                        "sasTtlAsIso8601": "PT1H",
+                        "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',parameters('storageAccountNameUpload'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload')), '2019-06-01').keys[0].value)]",
+                        "containerName": "images"
+                    }
+                },
+                "enableFileUploadNotifications": true,
+                "cloudToDevice": {
+                    "maxDeliveryCount": 10,
+                    "defaultTtlAsIso8601": "PT1H",
+                    "feedback": {
+                        "lockDurationAsIso8601": "PT1M",
+                        "ttlAsIso8601": "PT1H",
+                        "maxDeliveryCount": 10
+                    }
+                },
+                "features": "None"
             }
         }
     ],

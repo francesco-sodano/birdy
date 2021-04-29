@@ -17,7 +17,7 @@ for domain in trainer.get_domains():
   print(domain.id, "\t", domain.name) 
 
 # Create a project
-project = trainer.create_project("Lego - Simpsons - v1","0732100f-1a38-4e49-a514-c9b44c697ab5")
+project = trainer.create_project("Birdy - v1","0732100f-1a38-4e49-a514-c9b44c697ab5")
 
 # Create the tags and add the images to a list
 image_list = []

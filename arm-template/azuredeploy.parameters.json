@@ -2,23 +2,37 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "hostingPlanName": {
-            "value": "" // TODO: Fill in parameter value
-        },
         "storageAccountNameFunction": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "stbirdyfunction001"
         },
         "storageAccountNameUpload": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "stbirdyupload001"
         },
         "appInsightsServiceName": {
-            "value": "" // TODO: Fill in parameter value
+            "value": "appi-birdy-001"
         },
-        "cognitiveServiceName": {
-            "value": "" // TODO: Fill in parameter value
+        "hostingPlanName": {
+            "value": "plan-birdy-001"
+        },
+        "functionNameDispatcher": {
+            "value": "func-birdy-dispatcher"
+        },
+        "functionNameClassifier": {
+            "value": "func-birdy-classifier"
+        },
+        "iotHubName": {
+            "value": "iot-birdy-001"
+        },
+        "cognitiveVisionServiceName": {
+            "value": "cog-vision-birdy-001"
         },
         "tagValues": {
-            "value": "" // TODO: Fill in parameter value
+            "value": {
+                "Owner": "Francesco Sodano",
+                "Project": "Birdy",
+                "Environment": "Development",
+                "Deployment Time": "[utcNow('u')]"
+            }
         }
     }
 }
