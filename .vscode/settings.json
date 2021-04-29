@@ -1,0 +1,9 @@
+{
+    "azureFunctions.projectRuntime": "~3",
+    "azureFunctions.projectLanguage": "Python",
+    "azureFunctions.projectSubpath": "functions\\dispatcher",
+    "azureFunctions.deploySubpath": "functions\\dispatcher",
+    "azureFunctions.scmDoBuildDuringDeployment": true,
+    "azureFunctions.pythonVenv": ".venv",
+    "debug.internalConsoleOptions": "neverOpen"
+}
