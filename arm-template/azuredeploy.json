@@ -118,7 +118,8 @@
                 "name": "[parameters('hostingPlanName')]",
                 "workerSize": "0",
                 "workerSizeId": "0",
-                "numberOfWorkers": "1"
+                "numberOfWorkers": "1",
+                "reserved": true
             },
             "sku": {
                 "tier": "Dynamic",
