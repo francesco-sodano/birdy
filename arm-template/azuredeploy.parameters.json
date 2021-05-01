@@ -26,13 +26,15 @@
         "cognitiveVisionServiceName": {
             "value": "cog-vision-birdy-001"
         },
+        "vaultName": {
+            "value": "kv-birdy-001"
+        },
         "tagValues": {
             "value": {
                 "Owner": "Francesco Sodano",
                 "Project": "Birdy",
                 "Environment": "Development"
             }
-
         }
     }
 }

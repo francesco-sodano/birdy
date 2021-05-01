@@ -5,55 +5,61 @@
         "hostingPlanName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of Azure functions Hosting Plan"
             }
         },
         "storageAccountNameFunction": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of Storage account for functions"
             }
         },
         "storageAccountNameUpload": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of Storage account for Images Upload from devices"
             }
         },
         "appInsightsServiceName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the App Insight"
             }
         },
         "cognitiveVisionServiceName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the Computer Vision Service"
             }
         },
         "functionNameDispatcher": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the Function - Dispatcher"
             }
         },
         "functionNameClassifier": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the function - Classifier"
             }
         },
         "tagValues": {
             "type": "Object",
             "metadata": {
-                "description": "description"
+                "description": "Tags for all resources"
             }
         },
         "iotHubName": {
             "type": "string",
             "metadata": {
-                "description": "description"
+                "description": "Name of the IoT Hub"
+            }
+        },
+        "vaultName": {
+            "type": "string",
+            "metadata": {
+                "description": "Name of the Ky Vault for Secrets"
             }
         }
     },
@@ -63,7 +69,7 @@
         "iotHubKeyName": "service"
     },
     "resources": [
-        {   // Resource: Storage account for image upload
+        {   // Resource: Storage account for Image Upload
             "name": "[parameters('storageAccountNameUpload')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
@@ -138,7 +144,7 @@
                 "Application_Type": "other"
             }
         },
-                {   // Resource: Function App (Dispatcher)
+        {   // Resource: Function App (Dispatcher)
             "name": "[parameters('functionNameDispatcher')]",
             "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
@@ -254,7 +260,7 @@
                 "clientAffinityEnabled": false
             }
         },
-        {
+        {   // Resource: Cognitive Service
             "type": "Microsoft.CognitiveServices/accounts",
             "apiVersion": "2017-04-18",
             "name": "[parameters('cognitiveVisionServiceName')]",
@@ -276,7 +282,7 @@
                 "publicNetworkAccess": "Enabled"
             }
         },
-        {
+        {   // Resource: IoT Hub
             "type": "Microsoft.Devices/IotHubs",
             "apiVersion": "2020-08-01",
             "name": "[parameters('IoTHubName')]",
@@ -315,6 +321,58 @@
                 },
                 "features": "None"
             }
+        },
+        {   // Resource: Key Vault
+            "type": "Microsoft.KeyVault/vaults",
+            "apiVersion": "2019-09-01",
+            "name": "[parameters('vaultName')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload'))]",
+                "[resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveVisionServiceName'))]"
+            ],
+            "properties": {
+                "enableRbacAuthorization": false,
+                "enableSoftDelete": false,
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false,
+                "tenantId": "[subscription().tenantId]",
+                "accessPolicies": [],
+                "sku": {
+                    "name": "Standard",
+                    "family": "A"
+                },
+                "networkAcls": {
+                    "defaultAction": "Allow",
+                    "bypass": "AzureServices"
+                }
+            },
+            "resources": [
+                {
+                    "type": "secrets",
+                    "name": "ComputerVisionKey",
+                    "apiVersion": "2019-09-01",
+                    "properties": {
+                        "value": "[listKeys(variables('cogServCompVisionId'),'2017-04-18').key1]"
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                    ]
+                },
+                {
+                    "type": "secrets",
+                    "name": "StorageUploadKey",
+                    "apiVersion": "2019-09-01",
+                    "properties": {
+                        "value": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountNameUpload')),'2019-06-01').keys[0].value]"
+                    },
+                    "dependsOn": [
+                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                    ]
+                }
+            ]
         }
     ],
     "outputs": {}
