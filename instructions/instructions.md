@@ -68,3 +68,8 @@ export birdDetectionVersion="20200330-1.0"
 # Trainer
 
 pip install azure-cognitiveservices-vision-customvision
+
+
+# Functions
+pip install azure-storage-blob
+pip install azure-cognitiveservices-vision-computervision
