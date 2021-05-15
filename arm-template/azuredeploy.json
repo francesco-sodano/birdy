@@ -103,7 +103,7 @@
         "functionIdentityTrainer": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameTrainer')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "cognitiveCustomPreditionName": "[concat(parameters('cognitiveCustomVisionServiceName'),'-prediction')]",
         "iotHubKeyName": "service",
-        "consumerGroupNameDeviceStatus": "evhcg-birdy-tsi",
+        "consumerGroupNameDeviceStatus": "[concat(parameters('iotHubName'),'/events/evhcg-birdy-tsi')]",
         "consumerGroupNameBirdDetect": "evhcg-birdy-classifier",
         "eventHubAuthRuleIoT": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHubName'))]",
         "eventHubAuthRuleClassifier": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), variables('functionNameClassifier'))]"
@@ -532,14 +532,14 @@
                 "clientAffinityEnabled": false
             }
         },
-        {   // Resource: IoT Hub
+        {   // Resource : Iot Hub
             "type": "Microsoft.Devices/IotHubs",
             "name": "[parameters('IoTHubName')]",
             "apiVersion": "2020-08-01",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', variables('storageAccountBlobUpload'), 'default/deviceUpload')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]",
                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventHubNamespace'), parameters('eventHubName'))]"
             ],
             "sku": {
@@ -651,7 +651,7 @@
                     "name": "ComputerVisionKey",
                     "apiVersion": "2019-09-01",
                     "properties": {
-                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts/', parameters('cognitiveVisionServiceName')),'2017-04-18').key1]"
+                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveVisionServiceName')),'2017-04-18').key1]"
                     },
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
@@ -662,7 +662,7 @@
                     "name": "CustomVisionKeyTraining",
                     "apiVersion": "2019-09-01",
                     "properties": {
-                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveCustomVisionServiceName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]"
+                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveCustomVisionServiceName')),'2017-04-18').key1]"
                     },
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
@@ -673,7 +673,7 @@
                     "name": "CustomVisionKeyPrediction",
                     "apiVersion": "2019-09-01",
                     "properties": {
-                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveCustomPreditionName')), providers('Microsoft.CognitiveServices', 'accounts').apiVersions[0]).key1]"
+                        "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveCustomPreditionName')),'2017-04-18').key1]"
                     },
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
