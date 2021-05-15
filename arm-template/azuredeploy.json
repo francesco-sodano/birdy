@@ -125,12 +125,20 @@
                 "accessTier": "Hot"
             }
         },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+            ]
+        },
         {   // Resource: Blob Service Container
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2019-06-01",
-            "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceUpload')]",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default/','deviceUpload')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'),'default')]"
             ]
         },
         {   // Resource: Storage account for Azure Function Classifier
@@ -198,7 +206,7 @@
                 "isHnsEnabled": true
             }
         },
-                {   // Resource: Cognitive Service
+        {   // Resource: Cognitive Service
             "type": "Microsoft.CognitiveServices/accounts",
             "name": "[parameters('cognitiveVisionServiceName')]",
             "apiVersion": "2017-04-18",
