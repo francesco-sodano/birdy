@@ -21,7 +21,7 @@
             "value": "2" 
         },
         "cognitiveVisionServiceName": {
-            "value": "cog-vision-birdy-001"
+            "value": "cog-svs-birdy-001"
         },
         "cognitiveCustomVisionServiceName": {
             "value": "cog-cvs-birdy-001" 
