@@ -17,6 +17,13 @@ from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 from azure.core.exceptions import AzureError, ResourceExistsError
 
 
+class __birdyFile:
+    def __init__(self):
+        """
+        Create a Birdy file including all the information of the detected bird
+        """
+        print("TO DO!")
+
 class birdy:
     def __init__(self, iotDeviceConnectionString, deviceStorage, devicePosition = "('51.477878','-0.001267')"):
         """
@@ -97,18 +104,24 @@ class birdy:
         Takes picture of the bird as soon as the PIR is activated.
         """
         self._devicePIR.wait_for_active()
+        # wait for the right position of the bird
+        sleep(2)
         birdImageTime = datetime.utcnow()
         birdImage = f"{self._deviceStorage}/birdImage{birdImageTime.strftime('%Y%m%d_%H%M%S')}.jpg"
         self._deviceCamera.capture(birdImage)
         try:
             await self.__birdUpload(birdImage, birdImageTime)
+            result = {"statusCode": 200, "statusDescription" : birdImage}
+            # waiting time to reduce false positive
             sleep(2)
             self._devicePIR.wait_for_inactive()
-            result = {"statusCode": 200, "statusDescription" : birdImage}
-            sleep(1)
+            # wait for the inactive queue to be empty
+            sleep(2)
+            return result
         except:
             result = {"statusCode": 401, "statusDescription" : "Image Upload Error"}
-        return result
+            self._devicePIR.wait_for_inactive()
+            return (result)
 
     async def __birdUpload(self, birdImage, birdImageTime):
         birdImageName = birdImage.rsplit('/',1)[1]
@@ -121,7 +134,8 @@ class birdy:
             messageData = '{' + f'"deviceName" : "{self._deviceName}", \
             "deviceID" : "{self._deviceID}", \
             "gpsLocation" : {self._devicePosition}, \
-            "blobUri" : {blobUri}, \
+            "containerName" : {storageInfo["containerName"]}, \
+            "blobName" : {storageInfo["blobName"]}, \
             "captureTime" : {birdImageTime}' + '}'
             message = Message(messageData)
             message.custom_properties["messageType"] = "birdDetect"
