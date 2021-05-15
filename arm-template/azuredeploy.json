@@ -122,15 +122,6 @@
             },
             "properties": {
                 "supportsHttpsTrafficOnly": true,
-                "encryption": {
-                    "services": {
-                        "blob": {
-                            "keyType": "Account",
-                            "enabled": true
-                        }
-                    },
-                    "keySource": "Microsoft.Storage"
-                },
                 "accessTier": "Hot"
             }
         },
@@ -144,14 +135,6 @@
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
-            },
-            "properties": {
-                "cors": {
-                    "corsRules": []
-                },
-                "deleteRetentionPolicy": {
-                    "enabled": false
-                }
             }
         },
         {
@@ -620,7 +603,8 @@
                     "$default": {
                         "sasTtlAsIso8601": "PT1H",
                         "connectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountBlobUpload'),';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload')),'2019-06-01').keys[0].value)]",
-                        "containerName": "deviceUpload"
+                        "containerName": "deviceupload",
+                        "authenticationType": "keyBased"
                     }
                 },
                 "enableFileUploadNotifications": false,
