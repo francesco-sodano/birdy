@@ -130,7 +130,7 @@
             "apiVersion": "2019-06-01",
             "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceUpload')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'), 'default')]"
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
             ]
         },
         {   // Resource: Storage account for Azure Function Classifier
