@@ -2,14 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountNameFunction": {
-            "value": "stbirdyfunction"
+        "storageAccountNamePrefix": {
+            "value": "stbirdy"
         },
-        "storageAccountNameUpload": {
-            "value": "stbirdyupload001"
-        },
-        "storageAccountNameTimeSeries": {
-            "value": "stbirdytimeseries001"
+        "functionNamePrefix": {
+            "value": "func-birdy"
         },
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
@@ -17,20 +14,11 @@
         "hostingPlanName": {
             "value": "plan-birdy-001"
         },
-        "functionNameClassifier": {
-            "value": "func-birdy-classifier"
-        },
-        "functionNameTrainer": {
-            "value": "func-birdy-trainer"
-        },
-        "functionNameDeviceUpdater": {
-            "value": "func-birdy-updater"
-        },
         "iotHubName": {
             "value": "iot-birdy-001"
         },
-        "eventHubNamespace": {
-            "value": "evhns-birdy-001"
+        "iotHubPartitions": {
+            "value": "2" 
         },
         "cognitiveVisionServiceName": {
             "value": "cog-vision-birdy-001"
@@ -51,6 +39,12 @@
                     "type": "string"
                 }
             ]
+        },
+        "eventHubNamespace": {
+            "value": "evhn-birdy-001"
+        },
+        "eventHubName": {
+            "value": "evh-birdy-birddetect"
         },
         "tagValues": {
             "value": {
