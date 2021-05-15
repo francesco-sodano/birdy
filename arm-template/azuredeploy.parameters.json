@@ -3,10 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountNameFunction": {
-            "value": "stbirdyfunction001"
+            "value": "stbirdyfunction"
         },
         "storageAccountNameUpload": {
             "value": "stbirdyupload001"
+        },
+        "storageAccountNameTimeSeries": {
+            "value": "stbirdytimeseries001"
         },
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
@@ -14,20 +17,40 @@
         "hostingPlanName": {
             "value": "plan-birdy-001"
         },
-        "functionNameDispatcher": {
-            "value": "func-birdy-dispatcher"
-        },
         "functionNameClassifier": {
             "value": "func-birdy-classifier"
+        },
+        "functionNameTrainer": {
+            "value": "func-birdy-trainer"
+        },
+        "functionNameDeviceUpdater": {
+            "value": "func-birdy-updater"
         },
         "iotHubName": {
             "value": "iot-birdy-001"
         },
+        "eventHubNamespace": {
+            "value": "evhns-birdy-001"
+        },
         "cognitiveVisionServiceName": {
             "value": "cog-vision-birdy-001"
         },
+        "cognitiveCustomVisionServiceName": {
+            "value": "cog-cvs-birdy-001" 
+        },
         "vaultName": {
             "value": "kv-birdy-001"
+        },
+        "tsiName": {
+            "value": "tsi-birdy-001" 
+        },
+        "environmentTimeSeriesIdProperties": {
+            "value": [
+                {
+                    "name": "iothub-connection-device-id",
+                    "type": "string"
+                }
+            ]
         },
         "tagValues": {
             "value": {
