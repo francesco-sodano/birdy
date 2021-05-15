@@ -123,16 +123,14 @@
             "properties": {
                 "supportsHttpsTrafficOnly": true,
                 "accessTier": "Hot"
-            },
-            "resources": [
-                {
-                    "type": "blobServices/containers",
-                    "name": "default/deviceUpload",
-                    "apiVersion": "2019-06-01",
-                    "dependsOn": [
-                         "[variables('storageAccountBlobUpload')]"
-                    ]
-                }
+            }
+        },
+        {   // Resource: Blob Service Container
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceUpload')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'), 'default')]"
             ]
         },
         {   // Resource: Storage account for Azure Function Classifier
@@ -762,7 +760,7 @@
             "type": "Microsoft.TimeSeriesInsights/environments",
             "name": "[parameters('tsiName')]",
             "apiVersion": "2020-05-15",
-            "kind": "LongTerm",
+            "kind": "Gen2",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
