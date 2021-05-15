@@ -126,11 +126,11 @@
             },
             "resources": [
                 {
-                    "type": "containers",
-                    "name": "deviceUpload",
+                    "type": "blobServices/containers",
+                    "name": "default/deviceUpload",
                     "apiVersion": "2019-06-01",
                     "dependsOn": [
-                         "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+                         "[variables('storageAccountBlobUpload')]"
                     ]
                 }
             ]
