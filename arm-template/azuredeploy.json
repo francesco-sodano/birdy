@@ -625,6 +625,9 @@
             "type": "Microsoft.Devices/iotHubs/eventhubEndpoints/ConsumerGroups",
             "name": "[variables('consumerGroupNameDeviceStatusId')]",
             "apiVersion": "2020-08-01",
+            "properties": {
+              "name": "[variables('consumerGroupNameDeviceStatus')]"
+            },
             "dependsOn": [
                 "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
             ]
