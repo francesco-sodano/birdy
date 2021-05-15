@@ -103,7 +103,8 @@
         "functionIdentityTrainer": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameTrainer')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "cognitiveCustomPreditionName": "[concat(parameters('cognitiveCustomVisionServiceName'),'-prediction')]",
         "iotHubKeyName": "service",
-        "consumerGroupNameDeviceStatus": "[concat(parameters('iotHubName'),'/events/evhcg-birdy-tsi')]",
+        "consumerGroupNameDeviceStatus": "evhcg-birdy-tsi",
+        "consumerGroupNameDeviceStatusId": "[concat(parameters('iotHubName'),'/events/evhcg-birdy-tsi')]",
         "consumerGroupNameBirdDetect": "evhcg-birdy-classifier",
         "eventHubAuthRuleIoT": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHubName'))]",
         "eventHubAuthRuleClassifier": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), variables('functionNameClassifier'))]"
@@ -549,7 +550,7 @@
         {   // Resource : Iot Hub
             "type": "Microsoft.Devices/IotHubs",
             "name": "[parameters('IoTHubName')]",
-            "apiVersion": "2020-08-01",
+            "apiVersion": "2021-03-03-preview",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
@@ -622,10 +623,8 @@
         },
         {   // Resource: Consumer Group
             "type": "Microsoft.Devices/iotHubs/eventhubEndpoints/ConsumerGroups",
-            "name": "[variables('consumerGroupNameDeviceStatus')]",
+            "name": "[variables('consumerGroupNameDeviceStatusId')]",
             "apiVersion": "2020-08-01",
-            "properties": {
-            },
             "dependsOn": [
                 "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
             ]
@@ -782,6 +781,7 @@
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]",
+                "[resourceId('Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups', parameters('iotHubName'), 'events', variables('consumerGroupNameDeviceStatus'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountTimeSeries'))]"
             ],
             "sku": {
