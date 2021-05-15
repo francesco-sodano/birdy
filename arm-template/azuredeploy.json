@@ -112,7 +112,7 @@
         {   // Resource: Storage account for Image Upload
             "type": "Microsoft.Storage/storageAccounts",
             "name": "[variables('storageAccountBlobUpload')]",
-            "apiVersion": "2018-02-01",
+            "apiVersion": "2019-06-01",
             "kind": "StorageV2",
             "tags": "[parameters('tagValues')]",
             "location": "[resourceGroup().location]",
@@ -122,21 +122,49 @@
             },
             "properties": {
                 "supportsHttpsTrafficOnly": true,
+                "encryption": {
+                    "services": {
+                        "blob": {
+                            "keyType": "Account",
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                },
                 "accessTier": "Hot"
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+            ],
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
             },
-            "resources": [
-                {
-                    "type": "blobServices/containers",
-                    "apiVersion": "2018-03-01-preview",
-                    "name": "default/deviceUpload",
-                    "dependsOn": [
-                        "[variables('storageAccountBlobUpload')]"
-                    ],
-                    "properties": {
-                        "publicAccess": "None"
-                    }
+            "properties": {
+                "cors": {
+                    "corsRules": []
+                },
+                "deleteRetentionPolicy": {
+                    "enabled": false
                 }
-            ]
+            }
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceupload')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
         },
         {   // Resource: Storage account for Azure Function Classifier
             "type": "Microsoft.Storage/storageAccounts",
