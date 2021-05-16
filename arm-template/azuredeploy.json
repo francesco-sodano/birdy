@@ -426,8 +426,7 @@
                         }
                     ],
                     "linuxFxVersion": "Python|3.9",
-                    "use32BitWorkerProcess": false,
-                    "alwaysOn": true
+                    "use32BitWorkerProcess": false
                 },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
                 "clientAffinityEnabled": false
@@ -479,8 +478,7 @@
                         }
                     ],
                     "linuxFxVersion": "Python|3.9",
-                    "use32BitWorkerProcess": false,
-                    "alwaysOn": true
+                    "use32BitWorkerProcess": false
                 },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
                 "clientAffinityEnabled": false
@@ -540,8 +538,7 @@
                         }
                     ],
                     "linuxFxVersion": "Python|3.9",
-                    "use32BitWorkerProcess": false,
-                    "alwaysOn": true
+                    "use32BitWorkerProcess": false
                 },
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
                 "clientAffinityEnabled": false
