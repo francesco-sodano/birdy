@@ -660,7 +660,8 @@
                 "networkAcls": {
                     "defaultAction": "Allow",
                     "bypass": "AzureServices"
-                }
+                },
+                "accessPolicies": []
             },
             "resources": [
                 {
@@ -704,7 +705,7 @@
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountBlobUpload'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
                     },
                     "dependsOn": [
-                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
                     ]
                 },
                 {
@@ -715,7 +716,7 @@
                         "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/Iothubs', parameters('iotHubName'))).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName')), '2020-03-01').primaryKey)]"
                     },
                     "dependsOn": [
-                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
                     ]
                 },
                 {
@@ -726,7 +727,7 @@
                         "value": "[listkeys(variables('eventHubAuthRuleClassifier'), '2017-04-01').primaryConnectionString]"
                     },
                     "dependsOn": [
-                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
                     ]
                 },
                 {
@@ -737,7 +738,7 @@
                         "value": "[listkeys(variables('eventHubAuthRuleIoT'), '2017-04-01').primaryConnectionString]"
                     },
                     "dependsOn": [
-                        "[concat('Microsoft.KeyVault/vaults/', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
                     ]
                 }
             ]
@@ -747,7 +748,10 @@
             "name": "[concat(parameters('vaultName'), '/add')]",
             "apiVersion": "2019-09-01",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', variables('functionNameClassifier'))]"
+                "[resourceId('Microsoft.Web/sites', variables('functionNameClassifier'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionNameUpdater'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionNameTrainer'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
             ],
             "properties": {
                 "accessPolicies": [
