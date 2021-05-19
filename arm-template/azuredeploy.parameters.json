@@ -9,7 +9,7 @@
             "value": "cog-svs-birdy-001"
         },
         "cognitiveCustomVisionServiceName": {
-            "value": "cog-cvs-birdy-001" 
+            "value": "cog-custom-birdy-001" 
         },
         "vaultName": {
             "value": "kv-birdy-001"
@@ -147,7 +147,7 @@
                     "skuName":"S0"
                 },
                 "custom": {
-                    "name": "cog-cvs-birdy-001",
+                    "name": "cog-custom-birdy-001",
                     "skuNameTraining":"S0",
                     "skuNamePrediction": "S0"
                 }
