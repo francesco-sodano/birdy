@@ -2,9 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "dataLakeStorageNamePrefix": {
-            "value": "dlsbirdy"
-        },
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
         },
@@ -143,7 +140,7 @@
                 }
             }
         },
-        "cognitiveservices":{
+        "cognitiveServices":{
             "value": {
                 "vision": {
                     "name": "cog-svs-birdy-001",
@@ -181,7 +178,7 @@
                 }
             }
         },
-        "keyvault": {
+        "keyVault": {
             "value": {
                 "name": "kv-birdy-001",
                 "skuname": "Standard",

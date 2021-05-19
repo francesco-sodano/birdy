@@ -98,6 +98,18 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "cognitiveServices":{
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "keyVault": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "functions": [],
