@@ -5,12 +5,6 @@
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
         },
-        "cognitiveVisionServiceName": {
-            "value": "cog-vision-birdy-001"
-        },
-        "cognitiveCustomVisionServiceName": {
-            "value": "cog-custom-birdy-001" 
-        },
         "vaultName": {
             "value": "kv-birdy-001"
         },
