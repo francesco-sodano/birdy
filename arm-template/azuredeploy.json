@@ -119,7 +119,7 @@
         "functionIdentityTrainer": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameTrainer')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "cognitiveCustomPreditionName": "[concat(parameters('cognitiveCustomVisionServiceName'),'-prediction')]",
         "iotHubKeyName": "service",
-        "consumerGroupNameBirdDetect": "[parameters('eventhub').consumerGroup]",
+        "consumerGroupNameBirdDetect": "[parameters('eventHub').consumerGroup]",
         "consumerGroupNameDeviceStatus": "[parameters('iotHub').consumerGroup]",
         "consumerGroupNameDeviceStatusId": "[concat(parameters('iotHub').name,'/events/', variables('consumerGroupNameDeviceStatus'))]",
         "eventHubAuthRuleIoT": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHub').name)]",
