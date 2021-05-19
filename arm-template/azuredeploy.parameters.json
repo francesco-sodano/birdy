@@ -6,7 +6,7 @@
             "value": "appi-birdy-001"
         },
         "cognitiveVisionServiceName": {
-            "value": "cog-svs-birdy-001"
+            "value": "cog-vision-birdy-001"
         },
         "cognitiveCustomVisionServiceName": {
             "value": "cog-custom-birdy-001" 
