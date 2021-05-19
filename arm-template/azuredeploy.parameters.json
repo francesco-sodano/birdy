@@ -2,23 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "storageAccountNamePrefix": {
-            "value": "stbirdy"
-        },
-        "functionNamePrefix": {
-            "value": "func-birdy"
+        "dataLakeStorageNamePrefix": {
+            "value": "dlsbirdy"
         },
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
-        },
-        "hostingPlanName": {
-            "value": "plan-birdy-001"
-        },
-        "iotHubName": {
-            "value": "iot-birdy-001"
-        },
-        "iotHubPartitions": {
-            "value": "2" 
         },
         "cognitiveVisionServiceName": {
             "value": "cog-svs-birdy-001"
@@ -51,6 +39,157 @@
                 "Owner": "Francesco Sodano",
                 "Project": "Birdy",
                 "Environment": "Development"
+            }
+        },
+        "iotHub": {
+            "value": {
+                "name": "iot-birdy-001",
+                "partitions": "2",
+                "consumerGroup": "evhcg-birdy-tsi",
+                "skuName": "S1",
+                "skuTier": "Standard",
+                "skuCapacity": 1,
+                "enableFileUploadNotifications": false,
+                "storageupload":{
+                    "name": "stbirdyblobupload001",
+                    "skuname": "Standard_LRS",
+                    "skutier": "Standard",
+                    "supportsHttpsTrafficOnly": true,
+                    "accessTier": "Hot",
+                    "isHnsEnabled": false
+                }
+            }
+        },
+        "eventHub": {
+            "value": {
+                "namespace": "evhn-birdy-001",
+                "skuname": "Standard",
+                "skutier": "Standard",
+                "skucapacity": 1,
+                "zoneRedundant": true,
+                "isAutoInflateEnabled": false,
+                "maximumThroughputUnits": 0,
+                "kafkaEnabled": true,
+                "name": "evh-birdy-birddetect",
+                "consumerGroup": "evhcg-birdy-classifier"
+            }
+        },
+        "classifier": {
+            "value": {
+                "name": "func-birdy-classifier",
+                "workerProcessCount": "5",
+                "storage": {
+                    "name": "stbirdyfuncclassifier001",
+                    "skuname": "Standard_LRS",
+                    "skutier": "Standard",
+                    "supportsHttpsTrafficOnly": true,
+                    "accessTier": "Hot",
+                    "isHnsEnabled": false
+                },
+                "plan": {
+                    "name": "plan-birdy-classifier-001",
+                    "workerSize": "0",
+                    "workerSizeId": "0",
+                    "numberOfWorkers": "1",
+                    "reserved": true,
+                    "skutier": "Dynamic",
+                    "skuname": "Y1"
+                }
+            }
+        },
+        "trainer": {
+            "value": {
+                "name": "func-birdy-trainer",
+                "workerProcessCount": "5",
+                "storage": {
+                    "name": "stbirdyfunctrainer001",
+                    "skuname": "Standard_LRS",
+                    "skutier": "Standard",
+                    "supportsHttpsTrafficOnly": true,
+                    "accessTier": "Hot",
+                    "isHnsEnabled": false
+                },
+                "plan": {
+                    "name": "plan-birdy-trainer-001",
+                    "workerSize": "0",
+                    "workerSizeId": "0",
+                    "numberOfWorkers": "1",
+                    "reserved": true,
+                    "skutier": "Dynamic",
+                    "skuname": "Y1"
+                }
+            }
+        },
+        "updater": {
+            "value": {
+                "name": "func-birdy-updater",
+                "workerProcessCount": "5",
+                "storage": {
+                    "name": "stbirdyfuncupdater001",
+                    "skuname": "Standard_LRS",
+                    "skutier": "Standard",
+                    "supportsHttpsTrafficOnly": true,
+                    "accessTier": "Hot",
+                    "isHnsEnabled": false
+                },
+                "plan": {
+                    "name": "plan-birdy-updater-001",
+                    "workerSize": "0",
+                    "workerSizeId": "0",
+                    "numberOfWorkers": "1",
+                    "reserved": true,
+                    "skutier": "Dynamic",
+                    "skuname": "Y1"
+                }
+            }
+        },
+        "cognitiveservices":{
+            "value": {
+                "vision": {
+                    "name": "cog-svs-birdy-001",
+                    "skuName":"S0"
+                },
+                "custom": {
+                    "name": "cog-cvs-birdy-001",
+                    "skuNameTraining":"S0",
+                    "skuNamePrediction": "S0"
+                }
+            }
+        },
+        "dataLake":{
+            "value": {
+                "name": "dlsbirdydata001",
+                "skuname": "Standard_LRS",
+                "skutier": "Standard",
+                "supportsHttpsTrafficOnly": true,
+                "accessTier": "Hot",
+                "isHnsEnabled": true
+            }
+        },
+        "timeSeries": {
+            "value": {
+                "name": "tsi-birdy-001",
+                "skuname": "L1",
+                "skucapacity": 1,
+                "storage": {
+                    "name": "dlsbirdytsi001",
+                    "skuname": "Standard_LRS",
+                    "skutier": "Standard",
+                    "supportsHttpsTrafficOnly": true,
+                    "accessTier": "Hot",
+                    "isHnsEnabled": true
+                }
+            }
+        },
+        "keyvault": {
+            "value": {
+                "name": "kv-birdy-001",
+                "skuname": "Standard",
+                "skufamily": "A",
+                "enableSoftDelete": true,
+                "enabledForDeployment": false,
+                "enabledForDiskEncryption": false,
+                "enabledForTemplateDeployment": false
             }
         }
     }
