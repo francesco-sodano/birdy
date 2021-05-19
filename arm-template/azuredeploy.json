@@ -2,18 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters":{
-        "hostingPlanName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of Azure functions Hosting Plan"
-            }
-        },
-        "storageAccountNamePrefix": {
-            "type": "string",
-            "metadata": {
-                "description": "Prefix for all the Storage accounts created"
-            }
-        },
         "appInsightsServiceName": {
             "type": "string",
             "metadata": {
@@ -32,28 +20,10 @@
                 "description": "Name of the Custom Vision Service"
             }
         },
-        "functionNamePrefix": {
-            "type": "string",
-            "metadata": {
-                "description": "description"
-            }
-        },
         "tagValues": {
             "type": "Object",
             "metadata": {
                 "description": "Tags for all resources"
-            }
-        },
-        "iotHubName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the IoT Hub"
-            }
-        },
-        "iotHubPartitions": {
-            "type": "string",
-            "metadata": {
-                "description": "Number of partitions for the IoT Hub, it will define also the number of function instances - one function instance for each partition"
             }
         },
         "vaultName": {
@@ -86,27 +56,73 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "eventhub": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "iotHub": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "classifier": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "trainer": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "updater": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "dataLake": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "timeSeries": {
+            "type": "object",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "functions": [],
     "variables": {
-        "storageAccountFunctionClassifier": "[concat(parameters('storageAccountNamePrefix'),'func','classifier001')]",
-        "storageAccountFunctionTrainer": "[concat(parameters('storageAccountNamePrefix'),'func','trainer001')]",
-        "storageAccountFunctionUpdater": "[concat(parameters('storageAccountNamePrefix'),'func','updater001')]",
-        "storageAccountBlobUpload": "[concat(parameters('storageAccountNamePrefix'),'blob','upload001')]",
-        "storageAccountTimeSeries": "[concat(parameters('storageAccountNamePrefix'),'blob','tsi001')]",
-        "functionNameClassifier": "[concat(parameters('functionNamePrefix'),'-','classifier')]",
-        "functionNameUpdater": "[concat(parameters('functionNamePrefix'),'-','updater')]",
-        "functionNameTrainer": "[concat(parameters('functionNamePrefix'),'-','trainer')]",
+        "storageAccountFunctionClassifier": "[parameters('classifier').storage.name]",
+        "storageAccountFunctionTrainer": "[parameters('trainer').storage.name]",
+        "storageAccountFunctionUpdater": "[parameters('updater').storage.name]",
+        "storageAccountBlobUpload": "[parameters('iotHub').storageupload.name]",
+        "dataLakeStorageTimeSeries": "[parameters('timeSeries').storage.name]",
+        "dataLakeStorageData": "[parameters('dataLake').name]",
+        "functionNameClassifier": "[parameters('classifier').name]",
+        "functionNameTrainer": "[parameters('trainer').name]",
+        "functionNameUpdater": "[parameters('updater').name]",
+        "hostingPlanNameClassifier": "[parameters('classifier').plan.name]",
+        "hostingPlanNameTrainer": "[parameters('trainer').plan.name]",
+        "hostingPlanNameUpdater": "[parameters('updater').plan.name]",
         "functionIdentityClassifier": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameClassifier')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "functionIdentityUpdater": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameUpdater')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "functionIdentityTrainer": "[concat(resourceId('Microsoft.Web/sites', variables('functionNameTrainer')), '/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "cognitiveCustomPreditionName": "[concat(parameters('cognitiveCustomVisionServiceName'),'-prediction')]",
         "iotHubKeyName": "service",
-        "consumerGroupNameDeviceStatus": "evhcg-birdy-tsi",
-        "consumerGroupNameDeviceStatusId": "[concat(parameters('iotHubName'),'/events/evhcg-birdy-tsi')]",
-        "consumerGroupNameBirdDetect": "evhcg-birdy-classifier",
-        "eventHubAuthRuleIoT": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHubName'))]",
+        "consumerGroupNameBirdDetect": "[parameters('eventhub').consumerGroup]",
+        "consumerGroupNameDeviceStatus": "[parameters('iotHub').consumerGroup]",
+        "consumerGroupNameDeviceStatusId": "[concat(parameters('iotHub').name,'/events/', variables('consumerGroupNameDeviceStatus'))]",
+        "eventHubAuthRuleIoT": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHub').name)]",
         "eventHubAuthRuleClassifier": "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), variables('functionNameClassifier'))]"
     },
     "resources": [
@@ -124,30 +140,6 @@
             "properties": {
                 "supportsHttpsTrafficOnly": true,
                 "accessTier": "Hot"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices",
-            "apiVersion": "2019-06-01",
-            "name": "[concat(variables('storageAccountBlobUpload'), '/default')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
-            ],
-            "sku": {
-                "name": "Standard_LRS",
-                "tier": "Standard"
-            }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
-            "apiVersion": "2019-06-01",
-            "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceupload')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
-            ],
-            "properties": {
-                "publicAccess": "None"
             }
         },
         {   // Resource: Storage account for Azure Function Classifier
@@ -200,7 +192,7 @@
         },
         {   // Resource: Storage account for Time Series Insights
             "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('storageAccountTimeSeries')]",
+            "name": "[variables('dataLakeStorageTimeSeries')]",
             "apiVersion": "2019-06-01",
             "kind": "StorageV2",
             "tags": "[parameters('tagValues')]",
@@ -213,6 +205,75 @@
                 "supportsHttpsTrafficOnly": true,
                 "accessTier": "Hot",
                 "isHnsEnabled": true
+            }
+        },
+        {   // Resource: Storage account for Data Lake
+            "type": "Microsoft.Storage/storageAccounts",
+            "name": "[variables('dataLakeStorageData')]",
+            "apiVersion": "2019-06-01",
+            "kind": "StorageV2",
+            "tags": "[parameters('tagValues')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "Standard_GRS",
+                "tier": "Standard"
+            },
+            "properties": {
+                "supportsHttpsTrafficOnly": true,
+                "accessTier": "Hot",
+                "isHnsEnabled": true
+            }
+        },
+        {   //Resource: Default Container from Blob storage Upload
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+            ]
+        },
+        {   //Resource: Container from Blob storage Upload
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('storageAccountBlobUpload'), '/default/deviceupload')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountBlobUpload'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {   //Resource: Default Container from Blob storage Datalake
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('dataLakeStorageData'), '/default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeStorageData'))]"
+            ]
+        },
+        {   //Resource: Container from Blob storage datalake
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('dataLakeStorageData'), '/default/images')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('dataLakeStorageData'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeStorageData'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
+            }
+        },
+        {   //Resource: Container from Blob storage datalake
+            "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+            "apiVersion": "2019-06-01",
+            "name": "[concat(variables('dataLakeStorageData'), '/default/unclassified')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('dataLakeStorageData'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeStorageData'))]"
+            ],
+            "properties": {
+                "publicAccess": "None"
             }
         },
         {   // Resource: Cognitive Service
@@ -302,7 +363,7 @@
                         },
                         {
                             "type": "authorizationRules",
-                            "name": "[parameters('iotHubName')]",
+                            "name": "[parameters('iotHub').name]",
                             "apiVersion": "2017-04-01",
                             "dependsOn": [
                                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventHubNamespace'), parameters('eventHubName'))]"
@@ -326,15 +387,53 @@
                 }
             ]
         },
-        {   // Resource: Hosting Plan for Function App
+        {   // Resource: Hosting Plan for Function Classifier
             "type": "Microsoft.Web/serverfarms",
-            "name": "[parameters('hostingPlanName')]",
+            "name": "[variables('hostingPlanNameClassifier')]",
             "apiVersion": "2018-02-01",
             "kind": "linux",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "properties": {
-                "name": "[parameters('hostingPlanName')]",
+                "name": "[variables('hostingPlanNameClassifier')]",
+                "workerSize": "0",
+                "workerSizeId": "0",
+                "numberOfWorkers": "1",
+                "reserved": true
+            },
+            "sku": {
+                "tier": "Dynamic",
+                "name": "Y1"
+            }
+        },
+        {   // Resource: Hosting Plan for Function Updater
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('hostingPlanNameUpdater')]",
+            "apiVersion": "2018-02-01",
+            "kind": "linux",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "properties": {
+                "name": "[variables('hostingPlanNameUpdater')]",
+                "workerSize": "0",
+                "workerSizeId": "0",
+                "numberOfWorkers": "1",
+                "reserved": true
+            },
+            "sku": {
+                "tier": "Dynamic",
+                "name": "Y1"
+            }
+        },
+        {   // Resource: Hosting Plan for Function Updater
+            "type": "Microsoft.Web/serverfarms",
+            "name": "[variables('hostingPlanNameTrainer')]",
+            "apiVersion": "2018-02-01",
+            "kind": "linux",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tagValues')]",
+            "properties": {
+                "name": "[variables('hostingPlanNameTrainer')]",
                 "workerSize": "0",
                 "workerSizeId": "0",
                 "numberOfWorkers": "1",
@@ -368,7 +467,7 @@
                 "type": "SystemAssigned"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameClassifier'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionClassifier'))]",
                 "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'ComputerVisionKey')]",
@@ -428,7 +527,7 @@
                     "linuxFxVersion": "Python|3.9",
                     "use32BitWorkerProcess": false
                 },
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameClassifier'))]",
                 "clientAffinityEnabled": false
             }
         },
@@ -443,7 +542,7 @@
                 "type": "SystemAssigned"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameUpdater'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionUpdater'))]",
                 "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'iotHubConnectionString')]"
@@ -480,7 +579,7 @@
                     "linuxFxVersion": "Python|3.9",
                     "use32BitWorkerProcess": false
                 },
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameUpdater'))]",
                 "clientAffinityEnabled": false
             }
         },
@@ -495,7 +594,7 @@
                 "type": "SystemAssigned"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameTrainer'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionTrainer'))]",
                 "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'CustomVisionKeyTraining')]"
@@ -540,13 +639,13 @@
                     "linuxFxVersion": "Python|3.9",
                     "use32BitWorkerProcess": false
                 },
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameTrainer'))]",
                 "clientAffinityEnabled": false
             }
         },
         {   // Resource : Iot Hub
             "type": "Microsoft.Devices/IotHubs",
-            "name": "[parameters('IoTHubName')]",
+            "name": "[parameters('iotHub').name]",
             "apiVersion": "2021-03-03-preview",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
@@ -555,15 +654,15 @@
                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs', parameters('eventHubNamespace'), parameters('eventHubName'))]"
             ],
             "sku": {
-                "name": "S1",
-                "tier": "Standard",
-                "capacity": 1
+                "name": "[parameters('iotHub').skuName]",
+                "tier": "[parameters('iotHub').skuTier]",
+                "capacity": "[parameters('iotHub').skuCapacity]"
             },
             "properties": {
                 "eventHubEndpoints": {
                     "events": {
                         "retentionTimeInDays": 1,
-                        "partitionCount": "[parameters('iotHubPartitions')]"
+                        "partitionCount": "[parameters('iotHub').partitions]"
                     }
                 },
                 "routing": {
@@ -626,7 +725,7 @@
               "name": "[variables('consumerGroupNameDeviceStatus')]"
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]"
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHub').name)]"
             ]
         },
         {   // Resource: Key Vault
@@ -640,12 +739,12 @@
                 "[resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveVisionServiceName'))]",
                 "[resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveCustomPreditionName'))]",
                 "[resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveCustomVisionServiceName'))]",
-                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]",
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHub').name)]",
                 "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), variables('functionNameClassifier'))]",
-                "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHubName'))]"
+                "[resourceId('Microsoft.EventHub/namespaces/eventhubs/authorizationRules', parameters('eventHubNamespace'),parameters('eventHubName'), parameters('iotHub').name)]"
             ],
             "properties": {
-                "enableSoftDelete": false,
+                "enableSoftDelete": true,
                 "enabledForDeployment": false,
                 "enabledForDiskEncryption": false,
                 "enabledForTemplateDeployment": false,
@@ -710,7 +809,7 @@
                     "name": "iotHubConnectionString",
                     "apiVersion": "2019-09-01",
                     "properties": {
-                        "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/Iothubs', parameters('iotHubName'))).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHubName'), variables('iotHubKeyName')), '2020-03-01').primaryKey)]"
+                        "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/Iothubs', parameters('iotHub').name)).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHub').name, variables('iotHubKeyName')), '2020-03-01').primaryKey)]"
                     },
                     "dependsOn": [
                         "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
@@ -745,10 +844,10 @@
             "name": "[concat(parameters('vaultName'), '/add')]",
             "apiVersion": "2019-09-01",
             "dependsOn": [
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]",
                 "[resourceId('Microsoft.Web/sites', variables('functionNameClassifier'))]",
                 "[resourceId('Microsoft.Web/sites', variables('functionNameUpdater'))]",
-                "[resourceId('Microsoft.Web/sites', variables('functionNameTrainer'))]",
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                "[resourceId('Microsoft.Web/sites', variables('functionNameTrainer'))]"
             ],
             "properties": {
                 "accessPolicies": [
@@ -784,9 +883,9 @@
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]",
-                "[resourceId('Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups', parameters('iotHubName'), 'events', variables('consumerGroupNameDeviceStatus'))]",
-                "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountTimeSeries'))]"
+                "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHub').name)]",
+                "[resourceId('Microsoft.Devices/IotHubs/eventHubEndpoints/ConsumerGroups', parameters('iotHub').name, 'events', variables('consumerGroupNameDeviceStatus'))]",
+                "[resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeStorageTimeSeries'))]"
             ],
             "sku": {
                 "name": "L1",
@@ -794,8 +893,8 @@
             },
             "properties": {
                 "storageConfiguration": {
-                    "accountName": "[variables('storageAccountTimeSeries')]",
-                    "managementKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountTimeSeries')),'2019-06-01').keys[0].value]"
+                    "accountName": "[variables('dataLakeStorageTimeSeries')]",
+                    "managementKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('dataLakeStorageTimeSeries')),'2019-06-01').keys[0].value]"
                 },
                 "timeSeriesIdProperties": "[parameters('environmentTimeSeriesIdProperties')]"
             },
@@ -803,15 +902,15 @@
                 {
                     "type": "eventsources",
                     "kind": "Microsoft.IoTHub",
-                    "name": "[parameters('iotHubName')]",
+                    "name": "[parameters('iotHub').name]",
                     "apiVersion": "2020-05-15",
                     "location": "[resourceGroup().location]",
                     "properties": {
-                        "eventSourceResourceId": "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHubName'))]",
-                        "iotHubName": "[parameters('iotHubName')]",
+                        "eventSourceResourceId": "[resourceId('Microsoft.Devices/IotHubs', parameters('iotHub').name)]",
+                        "iotHubName": "[parameters('iotHub').name]",
                         "keyName": "service",
                         "consumerGroupName": "[variables('consumerGroupNameDeviceStatus')]",
-                        "sharedAccessKey": "[listkeys(resourceId('Microsoft.Devices/IoTHubs/IotHubKeys', parameters('IoTHubName'), 'service'), '2020-08-01').primaryKey]",
+                        "sharedAccessKey": "[listkeys(resourceId('Microsoft.Devices/IoTHubs/IotHubKeys', parameters('iotHub').name, 'service'), '2020-08-01').primaryKey]",
                         "timestampPropertyName": "",
                         "ingressStartAt": {
                             "type": "EventSourceCreationTime"
