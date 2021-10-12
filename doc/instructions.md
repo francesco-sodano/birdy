@@ -3,16 +3,18 @@
 
 # Raspberry Pi
 Setup Raspberry: https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
+
 Secure Raspberry: https://www.raspberrypi.org/documentation/configuration/security.md
+
 Passwordless access: https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md#copy-your-public-key-to-your-raspberry-pi
 
 Packages:
 
 sudo apt update
+
 sudo apt install git pijuice-base python3-pip python3-gpiozero
-sudo apt install 
-sudo apt install 
-pip3 debugpy gpiozero picamera azure-eventhub azure-iot-device azure.storage.blob get-mac retrying
+
+sudo apt install pip3 debugpy gpiozero picamera azure-eventhub azure-iot-device azure.storage.blob get-mac retrying
 
 Configurations (with raspi-config):
  - Enable Camera
@@ -33,7 +35,7 @@ When the Raspberry Pi shutsdown and then reboots you must copy the RTC time back
 
 sudo hwclock -s.
 
-Device Optimization
+# Device Optimization
 
 Disable Bluetooth
 Edit /boot/config.txt and add the following line at the bottom:
