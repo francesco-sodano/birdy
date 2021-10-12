@@ -14,12 +14,6 @@
                 "description": "Tags for all resources"
             }
         },
-        "vaultName": {
-            "type": "string",
-            "metadata": {
-                "description": "Name of the Key Vault for Secrets"
-            }
-        },
         "tsiName": {
             "type": "string",
             "metadata": {
@@ -470,10 +464,10 @@
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameClassifier'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionClassifier'))]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'ComputerVisionKey')]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'CustomVisionKeyPrediction')]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'StorageAccountUploadConnectionString')]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'iotHubConnectionString')]"
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'ComputerVisionKey')]",
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'CustomVisionKeyPrediction')]",
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'StorageAccountUploadConnectionString')]",
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'iotHubConnectionString')]"
             ],
             "properties": {
                 "name": "[variables('functionNameClassifier')]",
@@ -505,7 +499,7 @@
                         },
                         {
                             "name": "StorageAccountUploadConnectionString",
-                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'StorageAccountUploadConnectionString')).secretUriWithVersion,')')]"
+                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'StorageAccountUploadConnectionString')).secretUriWithVersion,')')]"
                         },
                         {
                             "name": "ComputerVisionEndpoint",
@@ -513,7 +507,7 @@
                         },
                         {
                             "name": "ComputerVisionKey",
-                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'ComputerVisionKey')).secretUriWithVersion,')')]"
+                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'ComputerVisionKey')).secretUriWithVersion,')')]"
                         },
                         {
                             "name": "CustomVisionEndpoint",
@@ -521,7 +515,7 @@
                         },
                         {
                             "name": "CustomVisionKeyPrediction",
-                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'CustomVisionKeyPrediction')).secretUriWithVersion,')')]"
+                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'CustomVisionKeyPrediction')).secretUriWithVersion,')')]"
                         }
                     ],
                     "linuxFxVersion": "Python|3.9",
@@ -545,7 +539,7 @@
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameUpdater'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionUpdater'))]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'iotHubConnectionString')]"
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'iotHubConnectionString')]"
             ],
             "properties": {
                 "name": "[variables('functionNameUpdater')]",
@@ -597,7 +591,7 @@
                 "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanNameTrainer'))]",
                 "[resourceId('Microsoft.insights/components', parameters('appInsightsServiceName'))]",
                 "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountFunctionTrainer'))]",
-                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'CustomVisionKeyTraining')]"
+                "[resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'CustomVisionKeyTraining')]"
             ],
             "properties": {
                 "name": "[variables('functionNameTrainer')]",
@@ -633,7 +627,7 @@
                         },
                         {
                             "name": "CustomVisionKeyTraining",
-                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('vaultName'), 'CustomVisionKeyTraining')).secretUriWithVersion,')')]"
+                            "value": "[concat('@Microsoft.KeyVault(SecretUri=', reference(resourceId('Microsoft.KeyVault/vaults/secrets', parameters('keyVault').name, 'CustomVisionKeyTraining')).secretUriWithVersion,')')]"
                         }
                     ],
                     "linuxFxVersion": "Python|3.9",
@@ -730,7 +724,7 @@
         },
         {   // Resource: Key Vault
             "type": "Microsoft.KeyVault/vaults",
-            "name": "[parameters('vaultName')]",
+            "name": "[parameters('keyVault').name]",
             "apiVersion": "2019-09-01",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tagValues')]",
@@ -750,8 +744,8 @@
                 "enabledForTemplateDeployment": false,
                 "tenantId": "[subscription().tenantId]",
                 "sku": {
-                    "name": "Standard",
-                    "family": "A"
+                    "name": "[parameters('keyVault').skuname]",
+                    "family": "[parameters('keyVault').skufamily]"
                 },
                 "networkAcls": {
                     "defaultAction": "Allow",
@@ -768,7 +762,7 @@
                         "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveServices').vision.name),'2017-04-18').key1]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -779,7 +773,7 @@
                         "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('cognitiveServices').custom.name),'2017-04-18').key1]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -790,7 +784,7 @@
                         "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', variables('cognitiveCustomPreditionName')),'2017-04-18').key1]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -801,7 +795,7 @@
                         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountBlobUpload'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountBlobUpload')), '2019-06-01').keys[0].value,';EndpointSuffix=','core.windows.net')]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -812,7 +806,7 @@
                         "value": "[concat('HostName=', reference(resourceId('Microsoft.Devices/Iothubs', parameters('iotHub').name)).hostName, ';SharedAccessKeyName=', variables('iotHubKeyName'), ';SharedAccessKey=', listkeys(resourceId('Microsoft.Devices/Iothubs/Iothubkeys', parameters('iotHub').name, variables('iotHubKeyName')), '2020-03-01').primaryKey)]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -823,7 +817,7 @@
                         "value": "[listkeys(variables('eventHubAuthRuleClassifier'), '2017-04-01').primaryConnectionString]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 },
                 {
@@ -834,17 +828,20 @@
                         "value": "[listkeys(variables('eventHubAuthRuleIoT'), '2017-04-01').primaryConnectionString]"
                     },
                     "dependsOn": [
-                        "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]"
+                        "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]"
                     ]
                 }
             ]
         },
         {   // Resource: Key Vault Access Policy for the Function Apps
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
-            "name": "[concat(parameters('vaultName'), '/add')]",
+            "name": "[concat(parameters('keyVault').name, '/add')]",
             "apiVersion": "2019-09-01",
             "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('vaultName'))]",
+                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]",
+                "[resourceId('Microsoft.Web/sites', variables('functionNameClassifier'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionNameUpdater'))]",
+                "[resourceId('Microsoft.Web/sites', variables('functionNameTrainer'))]",
                 "[variables('functionNameClassifier')]",
                 "[variables('functionNameUpdater')]",
                 "[variables('functionNameTrainer')]"

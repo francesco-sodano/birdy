@@ -5,9 +5,6 @@
         "appInsightsServiceName": {
             "value": "appi-birdy-001"
         },
-        "vaultName": {
-            "value": "kv-birdy-001"
-        },
         "tsiName": {
             "value": "tsi-birdy-001" 
         },
@@ -176,11 +173,7 @@
             "value": {
                 "name": "kv-birdy-001",
                 "skuname": "Standard",
-                "skufamily": "A",
-                "enableSoftDelete": true,
-                "enabledForDeployment": false,
-                "enabledForDiskEncryption": false,
-                "enabledForTemplateDeployment": false
+                "skufamily": "A"
             }
         }
     }
