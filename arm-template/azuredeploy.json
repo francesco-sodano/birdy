@@ -836,11 +836,11 @@
         {   // Resource: Key Vault Access Policy for the Function Apps
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
             "name": "[concat(parameters('keyVault').name, '/add')]",
-            "apiVersion": "2019-09-01",
+            "apiVersion": "2021-04-01-preview",
             "dependsOn": [
-                "[variables('functionNameClassifier')]",
-                "[variables('functionNameUpdater')]",
-                "[variables('functionNameTrainer')]"
+                "[parameters('classifier').name]",
+                "[parameters('trainer').name]",
+                "[parameters('updater').name]"
             ],
             "properties": {
                 "accessPolicies": [
