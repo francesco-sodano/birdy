@@ -838,10 +838,6 @@
             "name": "[concat(parameters('keyVault').name, '/add')]",
             "apiVersion": "2019-09-01",
             "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVault').name)]",
-                "[resourceId('Microsoft.Web/sites', variables('functionNameClassifier'))]",
-                "[resourceId('Microsoft.Web/sites', variables('functionNameUpdater'))]",
-                "[resourceId('Microsoft.Web/sites', variables('functionNameTrainer'))]",
                 "[variables('functionNameClassifier')]",
                 "[variables('functionNameUpdater')]",
                 "[variables('functionNameTrainer')]"
