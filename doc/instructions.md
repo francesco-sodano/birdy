@@ -1,9 +1,30 @@
 # Setup Birdy
 
+Enable ssh
+
+In the boot volume, create a file without an extension and name it ssh
+
+Include Wi-Fi
+
+https://linuxhint.com/rasperberry_pi_wifi_wpa_supplicant/
+
+wpa_supplicant.conf
+
+country=US
+ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+update_config=1
+
+network={
+ssid="WIFI_SSID"
+scan_ssid=1
+psk="WIFI_PASSWORD"
+key_mgmt=WPA-PSK
+}
+
 # Raspberry Pi
 Setup Raspberry: https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
-Secure Raspberry: https://www.raspberrypi.org/documentation/configuration/security.md
+Secure Raspberry: https://www.raspberrypi.com/documentation/computers/configuration.html#securing-your-raspberry-pi
 
 Passwordless access: https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md#copy-your-public-key-to-your-raspberry-pi
 
