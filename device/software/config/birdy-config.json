@@ -1,0 +1,24 @@
+{
+    "device": {
+        "camera":{
+            "rotation": 180,
+            "resolution": {
+                "w": 2592, 
+                "h": 1944
+            },
+            "framerate": 15,
+            "drc_strength": "low",
+            "exposure_mode": "auto"
+        },
+        "motionpir":{
+            "pin": 4,
+            "queue_len": 2,
+            "sample_rate": 10,
+            "threshold": 0.9
+        },
+        "location":{
+            "latitude": "46.21112441577037",
+            "longitude": "6.1074539834889086"
+        } 
+    }
+}
