@@ -52,28 +52,34 @@ def main():
         devicePIR.wait_for_active()
         # wait for the right position of the bird
         sleep(2)
-        # take the time of the bird detection
-        birdImageTime = datetime.utcnow()
-        # take bird picture
-        birdImageName = f"{deviceStorage}/images/birdimage{birdImageTime.strftime('%Y%m%d_%H%M%S')}.jpg"
-        deviceCamera.capture(birdImageName)
+        birdImages = []
+        while devicePIR.is_active:
+            # take the time of the bird detection
+            birdImageTime = datetime.utcnow()
+            # take bird picture
+            birdImageName = f"{deviceStorage}/images/birdimage{birdImageTime.strftime('%Y%m%d_%H%M%S')}.jpg"
+            deviceCamera.capture(birdImageName)        
+            birdImages.append(birdImageName)
+            print("Image taken")
+            sleep(2)
         # prepare the bird file
-        birdfileName = f"{deviceStorage}/birdfile{birdImageTime.strftime('%Y%m%d_%H%M%S')}.json"
-        birdfile = {
+        birdFileTime = datetime.utcnow()
+        birdFileName = f"{deviceStorage}/birdfile{birdFileTime.strftime('%Y%m%d_%H%M%S')}.json"
+        birdFile = {
             "date" : birdImageTime.strftime("%d/%m/%Y"),
             "time" : birdImageTime.strftime("%H:%M:%S"),
             "temperature" : 20,
             "humidity" : 45,
-            "imagepath" : birdImageName,
+            "images" : birdImages
         }
         # write bird file as JSON
-        out_file = open(birdfileName,"w")
-        json.dump(birdfile,out_file, indent = 4)
+        out_file = open(birdFileName,"w")
+        json.dump(birdFile,out_file, indent = 4)
         out_file.close()
         # waiting time to reduce false positive
         sleep(2)
-        devicePIR.wait_for_inactive()
+        #devicePIR.wait_for_inactive()
         # wait for the inactive queue to be empty
-        sleep(2)
-        print("Image Captured")
+        #sleep(2)
+        print("Bird captured")
 if __name__ == "__main__": main()
