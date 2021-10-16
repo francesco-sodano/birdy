@@ -4,5 +4,11 @@
 
 apt-get update -y;
 apt-get install git -y;
-mkdir -p /usr/local/birdy;
-
+#create user birdy
+#move to the home of birdy
+mkdir -p $home/birdy;
+birdyconf_var_run="/usr/lib/tmpfiles.d/birdy.conf";
+if [ -e $birdyconf_var_run ]; then rm $birdyconf_var_run; fi
+touch /usr/lib/tmpfiles.d/birdy.conf
+echo "d /var/run/birdy 0775 birdy birdy -" > birdy.conf
+echo "d /var/run/birdy/images 0775 birdy birdy -" >> birdy.conf
