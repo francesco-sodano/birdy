@@ -1,14 +1,16 @@
 {
     "device": {
         "camera":{
-            "rotation": 180,
             "resolution": {
-                "w": 2592, 
-                "h": 1944
+                "w": 1920, 
+                "h": 1440
             },
+            "rotation": 0,
             "framerate": 15,
-            "drc_strength": "low",
-            "exposure_mode": "auto"
+            "drc_strength": "med",
+            "exposure_mode": "auto",
+            "iso": 200,
+            "sensormode": 2
         },
         "motionpir":{
             "pin": 4,
