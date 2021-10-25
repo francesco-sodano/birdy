@@ -1,4 +1,7 @@
-![Project Birdy Logo](https://github.com/francesco-sodano/birdy/raw/main/res/images/birdy-logo.jpg)
+
+<p align="center">
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/birdy-logo.jpg" width= 50%>
+</p>
 
 # Birdy - The Open-Source Smart Feeder to fight climate change
 Birdy is a nicely designed wild bird feeder that takes photos, identifies and classifies birds. - based on Raspberry Pi, Azure IoT and Azure cognitive Service.
@@ -28,10 +31,31 @@ So what if will be able to combine all these in one single, open solution that:
 2. Shares those data worldwide, to identify new or established migration routes and define new natural reserves to fight the climate change
 3. Works on our side to NOT miss out any visit you are having in your garden
 
+these are the reasons why we created **Project Birdy**
+
+<p align="center">
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/misc/birdy-device-promopicture1.jpg" width= 50%>
+</p>
+
+# The Repository
+
+the repository is organized in this way:
+
+1. *arm-template*: contains the IaC for the backend deployment.
+2. *backend*: contains the source code for the backend running on the infrastructure created with the ARM Template.
+3. *device*: contains the device STL for 3d printing and the software to run on the device.
+4. *doc*: contains the step-by-step documentation for put in place the entire solution
+5. *res*: contains static resources like images to be used in the doc files
+6. *tools*: contains any additional resource you may need to put in place the solution
+
+the next paragraphs will guide you on the device configuration and on the backend creation (if required)
+
 # The device
+
+
 
 # The backend
 
-# 
+# The mobile app
 
 
