@@ -37,7 +37,7 @@ these are the reasons why we created **Project Birdy**
 <img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/misc/birdy-device-promopicture1.jpg" width= 50%>
 </p>
 
-# The Repository
+# The Project Repository
 
 the repository is organized in this way:
 
@@ -53,9 +53,13 @@ the next paragraphs will guide you on the device configuration and on the backen
 # The device
 
 
-
 # The backend
 
 # The mobile app
+
+# Notice
+
+1. **Privacy** is always important for us. Birdy is designed and configured to have a very short focus range (5 cm max). it means that everything out of this range will be out-of-focus and blurred.
+2. **Squirrels** are usually a common issues for bird feeders: There is actually no way to stop squirrels to come to the feeder but hey.. let's them eat too.. we are nature friends! :). Birdy as anyway a specific function to detect squirrel presence (also with an alert for the Birdy owner if configured).
 
 
