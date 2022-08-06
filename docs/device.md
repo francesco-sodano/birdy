@@ -17,7 +17,7 @@ The Bird feeder is the main 3D Printed component of the device. it has the funct
 the Smart Box is detachable without compromise basic function of the feeder: it means you can use Birdy as standard feeder without the smart 
 
 <p align="center">
-<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/misc/birdy-device-promopicture1.jpg" width= 50%>
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/device/birdy_smartbox_closed.jpg" width= 50%>
 </p>
 
 ## Smart Box
@@ -31,7 +31,15 @@ The Smart Box has two different versions:
 
 1. **DEV Version**: this is based on Raspberry Pi 3 B+ and it's used for development. Raspberry Pi 3 B+ is able to handle direct connetion with Visual Studio Code for debugging. the battery life it's ok for few hours sessions.
 
+<p align="center">
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/device/birdy_smartbox_dev_open.jpg" width= 50%>
+</p>
+
 2. **PROD Version**: this is based on Raspberry Pi Zero W and it's used for production. it's requires less power and has a better battery life to permit long sessions (up to one week).
+
+<p align="center">
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/device/birdy_smartbox_prod_open.jpg" width= 50%>
+</p>
 
 The Smart box could be also directly connected to a power supply so Birdy can be always up and running.
 
