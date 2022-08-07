@@ -1,6 +1,6 @@
 
 <p align="center">
-<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/birdy-logo.jpg" width= 50%>
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/birdy-logo.jpg" width= 60%>
 </p>
 
 # Birdy - The Open-Source Smart Feeder to fight climate change
@@ -41,17 +41,14 @@ these are the reasons why we created **Project Birdy**
 
 the repository is organized in this way:
 
-1. *arm-template*: contains the IaC for the backend deployment.
-2. *backend*: contains the source code for the backend running on the infrastructure created with the ARM Template.
-3. *device*: contains the device STL for 3d printing and the software to run on the device.
-4. *doc*: contains the step-by-step documentation for put in place the entire solution
+1. *backend*: contains the contains the IaC for the backend deployment and the source code for the backend running on the infrastructure created.
+2. *device*: contains the device STL for 3d printing and the software to run on the device.
+3. *doc*: contains the step-by-step documentation for put in place the entire solution
+4. *mobile*: contains the source code for the mobile app
 5. *res*: contains static resources like images to be used in the doc files
 6. *tools*: contains any additional resource you may need to put in place the solution
 
-the next paragraphs will guide you on the device configuration and on the backend creation (if required)
-
 # The Device
-
 
 # The Back-end
 
@@ -62,4 +59,10 @@ the next paragraphs will guide you on the device configuration and on the backen
 1. **Privacy** is always important for us. Birdy is designed and configured to have a very short focus range (5 cm max). it means that everything out of this range will be out-of-focus and blurred.
 2. **Squirrels** are usually a common issues for bird feeders: There is actually no way to stop squirrels to come to the feeder but hey.. let's them eat too.. we are nature friends! :). Birdy as anyway a specific function to detect squirrel presence and don't collect pictures (also with an alert for the Birdy owner if configured).
 
+# Table of Content
 
+1. [Read Me](https://github.com/francesco-sodano/birdy/blob/main/README.md)
+2. [The Device](https://github.com/francesco-sodano/birdy/blob/main/docs/device.md)
+3. [Architecture](https://github.com/francesco-sodano/birdy/blob/main/docs/architecture.md)
+4. [Deployment](https://github.com/francesco-sodano/birdy/blob/main/docs/deployment.md)
+5. [Setup](https://github.com/francesco-sodano/birdy/blob/main/docs/instructions.md)
