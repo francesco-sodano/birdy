@@ -12,7 +12,7 @@ from time import sleep
 def main():
     # Importing settings
     try:
-        configFile = f'{os.path.dirname(os.getcwd())}/birdy-config.json'
+        configFile = f'{os.path.dirname(os.getcwd())}/birdy_config.json'
         with open(configFile, "rt") as file:
             deviceConfig = json.load(file)
             print ("File loaded")
