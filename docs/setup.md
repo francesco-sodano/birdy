@@ -1,47 +1,50 @@
 # Setup Birdy
 
-Enable ssh
+# Prepare Raspberry Pi
 
-In the boot volume, create a file without an extension and name it ssh
+Raspberry Pi recommend the use of Raspberry Pi Imager to install an operating system on to your SD card. You will need another computer with an SD card reader to install the image.
 
-Include Wi-Fi
+## Enable ssh
 
-https://linuxhint.com/rasperberry_pi_wifi_wpa_supplicant/
+In the boot volume, create a file without an extension and name it "ssh"
 
-wpa_supplicant.conf
+## Include Wi-Fi
 
-country=US
+In the boot volume, create a file called "wpa_supplicant.conf"
+
+```python
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
-
+country=CH
 network={
-ssid="WIFI_SSID"
-scan_ssid=1
-psk="WIFI_PASSWORD"
-key_mgmt=WPA-PSK
+    ssid="WIFI_SSID"
+    scan_ssid=1
+    psk="WIFI_PASSWORD"
+    priority=1
+    key_mgmt=WPA-PSK
 }
-
-# Raspberry Pi
+```
+## Setup 
 Setup Raspberry: https://www.raspberrypi.org/documentation/configuration/wireless/headless.md
 
 Secure Raspberry: https://www.raspberrypi.com/documentation/computers/configuration.html#securing-your-raspberry-pi
 
 Passwordless access: https://www.raspberrypi.org/documentation/remote-access/ssh/passwordless.md#copy-your-public-key-to-your-raspberry-pi
 
-Packages:
+## Install required Packages:
 
 sudo apt update
-
 sudo apt install git pijuice-base python3-pip python3-gpiozero
-
 sudo apt install pip3 debugpy gpiozero picamera azure-eventhub azure-iot-device azure.storage.blob get-mac retrying
+
+## Configure raspi-config
 
 Configurations (with raspi-config):
  - Enable Camera
  - Enable I2C
  - Add Timezone
 
-Setting the RTC (PiJuice)
+## Setting the RTC (PiJuice)
 
 After setting the date and time you must then copy the system time to the RTC with the command:
 
@@ -57,7 +60,8 @@ sudo hwclock -s.
 
 # Device Optimization
 
-Disable Bluetooth
+## Disable Bluetooth
+
 Edit /boot/config.txt and add the following line at the bottom:
     dtoverlay=pi3-disable-bt
 then run:
@@ -65,22 +69,23 @@ then run:
 on the next boot you can run the following command to check that BT is disabled:
 hcitool dev
 
-Disable HDMI
+## Disable HDMI
+
 Add the line to /etc/rc.local to disable HDMI on boot. 
 /usr/bin/tvservice -o
 Reduce memory for video in /boot/config.txt
 gpu_mem=16 
 
-Disable USB Chip
+## Disable USB Chip
 
 echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/unbind
 
-Add Environment virable
+## Add Environment variable
 
 Create a new file under /etc/profile.d to store the global environment variable(s). The name of the should be contextual so others may understand its purpose (for explample birddetector.sh)
 
-sudo touch /etc/profile.d/birddetector.sh
-sudo vi /etc/profile.d/birddetector.sh
+sudo touch /etc/profile.d/birdy.sh
+sudo vi /etc/profile.d/birdy.sh
 
 add the following line in vi.
 
