@@ -1,0 +1,20 @@
+FROM arm32v7/debian:bullseye-slim
+
+# Install required packages and directories
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        python3=3.9.2-3 python3-pip=20.3.4-4+deb11u1 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove \
+    && mkdir /usr/src/app
+
+# Application source
+WORKDIR /app
+ADD . /app
+
+# Install application dependencies
+RUN python3 -m pip install -r requirements.txt
+
+# Run the birdy_watcher
+CMD ["python3","birdy_watcher.py"]

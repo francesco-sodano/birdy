@@ -3,6 +3,7 @@
 # Prepare Raspberry Pi
 
 Raspberry Pi recommend the use of Raspberry Pi Imager to install an operating system on to your SD card. You will need another computer with an SD card reader to install the image.
+The image required is 
 
 ## Enable ssh
 
