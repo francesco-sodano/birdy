@@ -1,0 +1,2 @@
+picamera==1.13
+gpiozero==1.6.2
