@@ -12,7 +12,7 @@ from time import sleep
 def main():
     # Importing settings
     try:
-        configFile = f'{os.path.dirname(os.getcwd())}/birdy_config.json'
+        configFile = './birdy_watcher.conf'
         with open(configFile, "rt") as file:
             deviceConfig = json.load(file)
             print ("File loaded")
@@ -22,9 +22,9 @@ def main():
         return result
     # Configuring storage
     try:
-        if (os.path.exists('/var/run/birdy/')):
+        if (os.path.exists('/usr/src/app/birdy_files/')):
             print("Storage attached")
-            deviceStorage= '/var/run/birdy'
+            deviceStorage= '/usr/src/app/birdy_files'
     except:
         result = {"statusCode": 400, "statusDescription" : "Storage not present"}
         print ("Storage not present")
@@ -77,7 +77,7 @@ def main():
         json.dump(birdFile,out_file, indent = 4)
         out_file.close()
         # waiting time to reduce false positive
-        sleep(2)
+        sleep(5)
         #devicePIR.wait_for_inactive()
         # wait for the inactive queue to be empty
         #sleep(2)
