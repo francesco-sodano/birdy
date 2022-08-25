@@ -58,7 +58,6 @@ Add this line to the "Enable DRM VC4 V3D driver" section
 
 ```python
 dtoverlay=imx219,mediacontroller=0
-max_framebuffers=2
 ```
 
 
