@@ -45,6 +45,31 @@ Configurations (with raspi-config):
  - Enable I2C
  - Add Timezone
 
+
+## Configure Camera settings
+
+Modfiy the following line in the "Automatically load overlays for detected cameras"
+
+```python
+camera_auto_detect=0
+```
+
+Add this line to the "Enable DRM VC4 V3D driver" section
+
+```python
+dtoverlay=imx219,mediacontroller=0
+max_framebuffers=2
+```
+
+
+Add the follwoing lines at the end of the "/boot/config.txt" file
+
+```python
+gpu_mem=32
+start_file=start_x.elf
+fixup_file=fixup_x.dat
+```
+
 ## Setting the RTC (PiJuice)
 
 After setting the date and time you must then copy the system time to the RTC with the command:
@@ -74,8 +99,6 @@ hcitool dev
 
 Add the line to /etc/rc.local to disable HDMI on boot. 
 /usr/bin/tvservice -o
-Reduce memory for video in /boot/config.txt
-gpu_mem=16 
 
 ## Disable USB Chip
 
