@@ -12,13 +12,13 @@ the macro-components of the device are the following:
 
 ## Bird Feeder
 
-The Bird feeder is the main 3D Printed component of the device. it has the function of storing and deploy seeds and to handle the any version of the Smart box.
+The Bird feeder is the main 3D Printed component of the device. it has the function of storing and deploy seeds and to handle the any version of the Smart Box.
 
 <p align="center">
 <img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/device/birdy_feeder_nosmartbox.jpg" width= 50%>
 </p>
 
-the Smart Box is detachable without compromise basic function of the feeder: it means you can use Birdy as standard feeder without the smart box.
+the Smart Box is detachable without compromise basic function of the feeder: it means you can use Birdy as standard feeder without the Smart Box.
 
 ## Smart Box
 

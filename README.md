@@ -4,7 +4,7 @@
 </p>
 
 # Birdy - The Open-Source Smart Feeder to fight climate change
-Birdy is a nicely designed wild bird feeder that takes photos, identifies and classifies birds. - based on Raspberry Pi, Azure IoT and Azure cognitive Service.
+Birdy is a nicely designed wild bird feeder that takes photos, identifies and classifies birds. - based on Raspberry Pi, Azure IoT Edge and Azure Cognitive Service.
 
 # Inspiration
 
@@ -43,14 +43,24 @@ the repository is organized in this way:
 
 1. *backend*: contains the contains the IaC for the backend deployment and the source code for the backend running on the infrastructure created.
 2. *device*: contains the device STL for 3d printing and the software to run on the device.
-3. *doc*: contains the step-by-step documentation for put in place the entire solution
+3. *docs*: contains the step-by-step documentation for put in place the entire solution
 4. *mobile*: contains the source code for the mobile app
 5. *res*: contains static resources like images to be used in the doc files
 6. *tools*: contains any additional resource you may need to put in place the solution
 
 # The Device
 
+The device is based on Raspberry Pi and use Azure IoT Edge framework.
+
+<p align="center">
+<img src="https://github.com/francesco-sodano/birdy/raw/main/res/images/doc/doc-device-architecture.png" width= 60%>
+</p>
+
+More info can be found here: [The Device](https://github.com/francesco-sodano/birdy/blob/main/docs/device.md)
+
 # The Back-end
+
+
 
 # The Mobile App
 
