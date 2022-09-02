@@ -9,7 +9,7 @@ from time import sleep
 def main():
     try:
         # Initializing Motion PIR
-        devicePIR = MotionSensor(4,queue_len=6,sample_rate=10,threshold=0.9)
+        devicePIR = MotionSensor(4,queue_len=10,sample_rate=10,threshold=0.95)
         print("Motion PIR initialized")
     except:
         result = {"statusCode": 400, "statusDescription" : "Sensors Initialization error"}
