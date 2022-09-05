@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Digital Device - v20220902.1
+# PIR Tester Tool - v20220902.1
 # Copyright 2022 - Francesco Ares Sodano
 
 from gpiozero import MotionSensor
@@ -13,7 +13,7 @@ def main():
         print("Motion PIR initialized")
     except:
         result = {"statusCode": 400, "statusDescription" : "Sensors Initialization error"}
-        # Motion PIR error in intialization
+        # Motion PIR error in initialization
         print ("Sensors Initialization error")
         return result
     # Motion detect Loop
