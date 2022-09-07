@@ -25,5 +25,5 @@ def main():
             timeNow = datetime.utcnow()
             # Print the detection message
             print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - PIR Activated!")
-            sleep(2)          
+            devicePIR.wait_for_inactive()          
 if __name__ == "__main__": main()
