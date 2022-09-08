@@ -4,10 +4,8 @@ FROM fsodano79/raspbian:bullseye-20220901
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         python3=3.9.2-3 \
-        python3-pip=20.3.4-4+deb11u1 \
-        python3-rpi.gpio=0.7.0-0.2+b1 \
+        python3-pip=20.3.4-4+rpt1+deb11u1 \
         python3-gpiozero=1.4.1-1.3 \
-        python3-libcamera=0~git20220826+3fad116f-1 \
         python3-picamera2=0.3.3-1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
