@@ -88,10 +88,15 @@ sudo hwclock -s.
 ## Disable Bluetooth
 
 Edit /boot/config.txt and add the following line at the bottom:
-    dtoverlay=pi3-disable-bt
+    dtoverlay=disable-bt
+
 then run:
+    sudo systemctl disable hciuart.service
+    sudo systemctl disable bluealsa.service
     sudo systemctl disable bluetooth.service
+
 on the next boot you can run the following command to check that BT is disabled:
+
 hcitool dev
 
 ## Disable HDMI
