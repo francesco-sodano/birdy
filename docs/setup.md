@@ -128,3 +128,30 @@ pip install azure-cognitiveservices-vision-customvision
 # Functions
 pip install azure-storage-blob
 pip install azure-cognitiveservices-vision-computervision
+
+
+# Install Docker on the DEV device
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+sudo usermod -aG docker [user_name]
+sudo reboot
+
+# Install required software for Testing
+
+curl https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb > ./packages-microsoft-prod.deb;
+sudo apt install ./packages-microsoft-prod.deb;
+apt-get update -y;
+apt-get install git -y;
+git config --global user.email "email@github.com"
+git config --global user.name "github"
+
+# Visual Studio Extensions
+
+Docker
+markdownlint
+Python
+GitHub Pull Requests and Issues
+IntelliCode
+IntelliCode API Usage Examples
+
