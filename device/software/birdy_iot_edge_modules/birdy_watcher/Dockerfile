@@ -1,4 +1,4 @@
-FROM fsodano79/raspbian:bullseye-20220901
+FROM fsodano79/raspbian:bullseye-20220908
 
 # Install required packages and directories
 RUN apt-get update \
@@ -10,13 +10,13 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove \
-    && mkdir /usr/src/app \
-    && mkdir /usr/src/app/birdy_files \
-    && mkdir /usr/src/app/birdy_files/images
+    && mkdir /usr/src/birdy \
+    && mkdir /usr/src/birdy/birdy_files \
+    && mkdir /usr/src/birdy/birdy_files/images
 
 # Application source
-WORKDIR /usr/src/app
-ADD . /usr/src/app/
+WORKDIR /usr/src/birdy
+ADD . /usr/src/birdy/
 
 # Install application dependencies
 RUN python3 -m pip install -r requirements.txt
