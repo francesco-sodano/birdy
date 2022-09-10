@@ -20,3 +20,5 @@ if [ -e $birdyconf_var_run ]; then rm $birdyconf_var_run; fi
 touch /usr/lib/tmpfiles.d/birdy.conf
 echo "d /var/run/birdy 0775 birdy birdy -" > birdy.conf
 echo "d /var/run/birdy/images 0775 birdy birdy -" >> birdy.conf
+
+export LIBCAMERA_LOG_LEVELS=*:4

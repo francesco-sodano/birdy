@@ -7,6 +7,8 @@ RUN apt-get update \
         python3-pip=20.3.4-4+rpt1+deb11u1 \
         python3-gpiozero=1.4.1-1.3 \
         python3-picamera2=0.3.3-1 \
+        python3-tflite-runtime=2.5.0.post1 \
+        libatlas-base-dev=3.10.3-10+rpi1 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove \
