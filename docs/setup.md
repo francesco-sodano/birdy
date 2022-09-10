@@ -110,7 +110,7 @@ echo '1-1' |sudo tee /sys/bus/usb/drivers/usb/unbind
 
 ## Add Environment variable
 
-Create a new file under /etc/profile.d to store the global environment variable(s). The name of the should be contextual so others may understand its purpose (for explample birddetector.sh)
+Create a new file under /etc/profile.d to store the global environment variable(s). The name of the should be contextual so others may understand its purpose (for explample birdy.sh)
 
 sudo touch /etc/profile.d/birdy.sh
 sudo vi /etc/profile.d/birdy.sh
@@ -120,14 +120,6 @@ add the following line in vi.
 export iotDeviceConnectionString="VALUE"
 export birdDetectionVersion="20200330-1.0"
 
-# Trainer
-
-pip install azure-cognitiveservices-vision-customvision
-
-
-# Functions
-pip install azure-storage-blob
-pip install azure-cognitiveservices-vision-computervision
 
 
 # Install Docker on the DEV device
@@ -154,4 +146,12 @@ Python
 GitHub Pull Requests and Issues
 IntelliCode
 IntelliCode API Usage Examples
+
+# disable logging for libcamera
+
+append the folloing to /etc/environment file
+
+LIBCAMERA_LOG_LEVELS=*:4
+
+# Tensorflow required packages
 
