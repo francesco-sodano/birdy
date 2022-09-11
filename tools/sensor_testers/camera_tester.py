@@ -7,9 +7,10 @@ from datetime import datetime
 
 def main():
     try:
-        # Initializing Camera
+        # Initializing Camera - asking for square picture
         deviceCamera = Picamera2()
         deviceCameraConfig = deviceCamera.create_still_configuration()
+        deviceCamera.still_configuration.size = (800,800)
         deviceCamera.configure(deviceCameraConfig)
         print("Camera initialized")
     except:
@@ -19,7 +20,7 @@ def main():
         return result
     try:
         # Taking set of pictures
-        deviceCamera.start_and_capture_files("test{:d}.jpeg", initial_delay=0, delay=1, num_files=10, show_preview=False)
+        deviceCamera.start_and_capture_files("test{:d}.jpeg", initial_delay=1, delay=1, num_files=10, show_preview=False)
     except:
         result = {"statusCode": 400, "statusDescription" : "Camera issue on taking photo"}
         # Camera error in taking picture

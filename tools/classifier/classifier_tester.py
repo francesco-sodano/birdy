@@ -9,9 +9,9 @@ from tflite_runtime.interpreter import Interpreter
 import json
 
 # Configurations
-modelLabels = "birdy_aiyvision_index.txt"
-modelTensorflow = "birdy_aiyvision.tflite"
-testImage = "common_chaffinch.jpg"
+modelLabels = "birdy16_index.txt"
+modelTensorflow = "birdy16.tflite"
+testImage = "common_chaffinch_2.jpg"
 probabilityThreshold = 0.6
 
 def loadModellabels():
@@ -41,7 +41,7 @@ def classifyImage(interpreter, image, top_k=1):
 def identifyBird():
     """ is there a bird at the feeder? """
     image = Image.open(testImage)
-    resizedImage=image.resize((224,224))
+    resizedImage=image.resize((112,112))
     resizedImage.save("resizeimage.jpg")
     labels = loadModellabels()
     interpreter = Interpreter(modelTensorflow)
