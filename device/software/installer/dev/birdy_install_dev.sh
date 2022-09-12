@@ -17,7 +17,7 @@ apt-get install -y --no-install-recommends \
     libatlas-base-dev=3.10.3-10+rpi1 \
     python3=3.9.2-3 \
     python3-pip=20.3.4-4+rpt1+deb11u1 \
-    python3-gpiozero=1.4.1-1.3 \
+    python3-gpiozero=1.6.2-1 \
     python3-tflite-runtime=2.5.0.post1 \
     python3-picamera2=0.3.3-1;
 

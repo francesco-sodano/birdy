@@ -8,7 +8,8 @@ from datetime import datetime
 def main():
     try:
         # Initializing Camera - asking for square picture
-        deviceCamera = Picamera2()
+        tuning = Picamera2.load_tuning_file("imx219.json")
+        deviceCamera = Picamera2(tuning=tuning)
         deviceCameraConfig = deviceCamera.create_still_configuration()
         deviceCamera.still_configuration.size = (1280,1280)
         deviceCamera.configure(deviceCameraConfig)
