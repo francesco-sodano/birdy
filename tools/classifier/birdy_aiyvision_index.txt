@@ -81,7 +81,7 @@ Spizella pusilla
 Anas superciliosa
 Passerella iliaca
 Phoenicopterus ruber
-Sylvia atricapilla
+Eurasian blackcap
 Vireo bellii
 Vireo plumbeus
 Vireo philadelphicus
@@ -536,7 +536,7 @@ Charadrius vociferus
 Charadrius wilsonia
 Charadrius melodus
 Phoenicurus phoenicurus
-Phoenicurus ochruros
+Black redstart
 Charadrius dubius
 Eumomota superciliosa
 Anas querquedula
@@ -554,7 +554,7 @@ Recurvirostra avosetta
 Phasianus colchicus
 Pluvialis dominica
 Cinclus mexicanus
-Erithacus rubecula
+European robin
 Melanerpes aurifrons
 Charadrius hiaticula
 Egretta gularis
@@ -663,7 +663,7 @@ Poecile rufescens
 Periparus ater
 Chlorophanes spiza
 Estrilda astrild
-Cyanistes caeruleus
+Eurasian blue tit
 Sphyrapicus varius
 Petrochelidon pyrrhonota
 Troglodytes pacificus
@@ -693,7 +693,7 @@ Myiarchus tyrannulus
 Zosterops lateralis
 Zonotrichia leucophrys
 Agelaius phoeniceus
-Parus major
+Great Tit
 Zonotrichia capensis
 Oreothlypis peregrina
 Oreothlypis celata
@@ -776,7 +776,7 @@ Acridotheres tristis
 Sitta pygmaea
 Actophilornis africanus
 Sitta canadensis
-Sitta europaea
+Eurasian nuthatch
 Sitta pusilla
 Apus apus
 Sturnus vulgaris
