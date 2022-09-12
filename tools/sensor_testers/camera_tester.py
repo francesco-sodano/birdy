@@ -20,7 +20,7 @@ def main():
         return result
     try:
         # Taking set of pictures
-        deviceCamera.start_and_capture_files("test{:d}.jpeg", initial_delay=1, delay=1, num_files=2, show_preview=False)
+        deviceCamera.start_and_capture_files("test{:d}.jpg", initial_delay=1, delay=1, num_files=2, show_preview=False)
     except:
         result = {"statusCode": 400, "statusDescription" : "Camera issue on taking photo"}
         # Camera error in taking picture

@@ -21,44 +21,44 @@ Buff-breasted flycatcher
 Willow Flycatcher
 Hammond's flycatcher
 Cordilleran flycatcher
-Rallus limicola
-Grus grus
-Quiscalus major
-Branta leucopsis
-Cyanocorax yucatanicus
-Cyanocorax yncas
-Oceanites oceanicus
-Quiscalus niger
-Psilorhinus morio
-Megarynchus pitangua
-Gallinula tenebrosa
-Gallus gallus domesticus
-Numida meleagris
-Junco hyemalis caniceps
-Tyrannus vociferans
-Tyrannus tyrannus
-Tyrannus forficatus
-Tyrannus crassirostris
-Tyrannus verticalis
-Tyrannus savana
-Gallirallus australis
-Calocitta formosa
-Calocitta colliei
-Fulica americana
-Pachyramphus aglaiae
-Buteo lagopus
-Cygnus atratus
-Philesturnus rufusater
-Larus marinus
-Pitangus sulphuratus
-Anas rubripes
-Anthus novaeseelandiae novaeseelandiae
-Sayornis phoebe
-Sayornis nigricans
-Tityra semifasciata
-Dryocopus lineatus
-Porphyrio melanotus
-Anas bahamensis
+Virginia rail
+Common crane
+Boat-tailed grackle
+Barnacle goose
+Yucatan jay
+Green jay
+Wilson's storm petrel
+Greater Antillean grackle
+Brown jay
+Boat-billed flycatcher
+Dusky moorhen
+Chicken
+Helmeted guineafowl
+Dark-eyed junco
+Cassin's kingbird
+Eastern kingbird
+Scissor-tailed flycatcher
+Thick-billed kingbird
+Western kingbird
+Fork-tailed flycatcher
+Weka
+White-throated magpie-jay
+Black-throated magpie-jay
+American coot
+Rose-throated becard
+Rough-legged buzzard
+Black swan
+North Island saddleback
+Great black-backed gull
+Great kiskadee
+American black duck
+Australasian pipit
+Eastern phoebe
+Black phoebe
+Masked tityra
+Lineated woodpecker
+Australasian swamphen
+White-cheeked pintail
 Egretta novaehollandiae
 Anas crecca carolinensis
 Alectoris chukar
@@ -190,7 +190,7 @@ Ramphocelus passerinii
 Athene cunicularia
 Branta hutchinsii
 Fringilla montifringilla
-Fringilla coelebs
+Common chaffinch
 Junco hyemalis
 Cuculus canorus
 Junco phaeonotus
@@ -667,9 +667,9 @@ Cyanistes caeruleus
 Sphyrapicus varius
 Petrochelidon pyrrhonota
 Troglodytes pacificus
-Troglodytes hiemalis
+Winter wren
 Passer montanus
-Passer domesticus
+House sparrow
 Aphelocoma californica
 Amazilia yucatanensis
 Amazilia tzacatl

@@ -11,7 +11,7 @@ import json
 # Configurations
 modelLabels = "birdy_aiyvision_index.txt"
 modelTensorflow = "birdy_aiyvision.tflite"
-testImage = "house_sparrow_birdy_2.jpeg"
+testImage = "house_sparrow_birdy_1.jpeg"
 probabilityThreshold = 0.6
 
 def loadModellabels():
@@ -42,7 +42,7 @@ def identifyBird():
     """ is there a bird at the feeder? """
     image = Image.open(testImage)
     resizedImage=image.resize((224,224))
-    resizedImage.save("resizeimage.jpg")
+    # resizedImage.save("resizeimage.jpg")
     labels = loadModellabels()
     interpreter = Interpreter(modelTensorflow)
     interpreter.allocate_tensors()
