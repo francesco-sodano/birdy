@@ -19,8 +19,10 @@ def main():
         return result
     try:
         # Initializing Camera
-        deviceCamera = Picamera2()
+        tuning = Picamera2.load_tuning_file("imx219.json")
+        deviceCamera = Picamera2(tuning=tuning)
         deviceCameraConfig = deviceCamera.create_still_configuration()
+        deviceCamera.still_configuration.size = (1280,1280)
         deviceCamera.configure(deviceCameraConfig)
         print("Camera initialized")
     except:
@@ -38,7 +40,7 @@ def main():
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - PIR Activated!")
                 # Taking set of pictures
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - Taking photos!")
-                deviceCamera.start_and_capture_files(f"image-{timeNow.strftime('%Y%m%d_%H%M%S')}""-{:d}.jpeg", initial_delay=0, delay=2, num_files=3, show_preview=False)
+                deviceCamera.start_and_capture_files(f"image-{timeNow.strftime('%Y%m%d_%H%M%S')}""-{:d}.jpeg", initial_delay=0, delay=2, num_files=5, show_preview=False)
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - All Done!")
                 devicePIR.wait_for_inactive()
                 sleep(5)
