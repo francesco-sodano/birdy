@@ -10,7 +10,7 @@ from time import sleep
 def main():
     try:
         # Initializing Motion PIR
-        devicePIR = MotionSensor(4,queue_len=20,sample_rate=4,threshold=0.99)
+        devicePIR = MotionSensor(4,queue_len=5,sample_rate=10,threshold=0.99)
         print("Motion PIR initialized")
     except:
         result = {"statusCode": 400, "statusDescription" : "Motion PIR Initialization error"}
@@ -40,10 +40,10 @@ def main():
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - PIR Activated!")
                 # Taking set of pictures
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - Taking photos!")
-                deviceCamera.start_and_capture_files(f"image-{timeNow.strftime('%Y%m%d_%H%M%S')}""-{:d}.jpeg", initial_delay=0, delay=2, num_files=5, show_preview=False)
+                deviceCamera.start_and_capture_files(f"image-{timeNow.strftime('%Y%m%d_%H%M%S')}""-{:d}.jpeg", initial_delay=0, delay=1, num_files=5, show_preview=False)
                 print(f"{timeNow.strftime('%Y%m%d_%H%M%S')} - All Done!")
                 devicePIR.wait_for_inactive()
-                sleep(5)
+                sleep(2)
             except:
                 result = {"statusCode": 400, "statusDescription" : "Camera issue on taking photo"}
                 # Camera error in taking picture

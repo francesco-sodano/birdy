@@ -11,7 +11,7 @@ import json
 # Configurations
 modelLabels = "birdy_aiyvision_index.txt"
 modelTensorflow = "birdy_aiyvision.tflite"
-testImage = "uccellino.jpg"
+testImage = "house_sparrow_birdy_3.jpeg"
 probabilityThreshold = 0.6
 
 def loadModellabels():
