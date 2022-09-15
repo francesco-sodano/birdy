@@ -42,7 +42,6 @@ def identifyBird():
     """ is there a bird at the feeder? """
     image = Image.open(testImage)
     resizedImage=image.resize((224,224))
-    # resizedImage.save("resizeimage.jpg")
     labels = loadModellabels()
     interpreter = Interpreter(modelTensorflow)
     interpreter.allocate_tensors()
