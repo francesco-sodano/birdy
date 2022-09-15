@@ -21,6 +21,8 @@ apt-get install -y --no-install-recommends \
     python3-tflite-runtime=2.5.0.post1 \
     python3-picamera2=0.3.3-1;
 
+pip3 install opencv-python==4.6.0.66
+
 # Install Docker
 curl -fsSL https://get.docker.com -o get-docker.sh
 sh ./get-docker.sh
